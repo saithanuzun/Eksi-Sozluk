@@ -8,8 +8,14 @@ public class EksiSozlukContext : DbContext
 {
     public const string DEFAULT_SCHEMA = "dbo";
 
+    public EksiSozlukContext()
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    }
+
     public EksiSozlukContext(DbContextOptions options) : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     public DbSet<User> Users { get; set; }
@@ -23,6 +29,20 @@ public class EksiSozlukContext : DbContext
     public DbSet<EntryCommentFavorite> EntryCommentFavorites { get; set; }
 
     public DbSet<EmailConfirmation> EmailConfirmations { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        if (!optionsBuilder.IsConfigured)
+        {
+            var connStr =
+                "USER ID=postgres ; Password=password123;Server=localhost;Port=5432;Database=eksisozluk;Integrated Security=true;Pooling=true";
+            optionsBuilder.UseNpgsql(connStr, opt =>
+            {
+                opt.EnableRetryOnFailure();
+            }); 
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
