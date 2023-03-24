@@ -10,7 +10,7 @@ public class EmailConfirmationEntityConfiguration : BaseEntityConfiguration<Emai
     public override void Configure(EntityTypeBuilder<EmailConfirmation> builder)
     {
         base.Configure(builder);
-        
+
         builder.ToTable("emailconfirmation", EksiSozlukContext.DEFAULT_SCHEMA);
     }
 }

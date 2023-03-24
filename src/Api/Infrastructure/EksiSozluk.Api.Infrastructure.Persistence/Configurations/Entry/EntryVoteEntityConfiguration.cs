@@ -15,6 +15,6 @@ public class EntryVoteEntityConfiguration : BaseEntityConfiguration<EntryVote>
 
         builder.HasOne(i => i.Entry)
             .WithMany(i => i.EntryVotes)
-            .HasForeignKey(i=>i.EntryId);
+            .HasForeignKey(i => i.EntryId);
     }
 }

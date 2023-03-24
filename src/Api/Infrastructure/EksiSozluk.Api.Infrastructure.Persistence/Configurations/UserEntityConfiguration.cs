@@ -10,7 +10,7 @@ public class UserEntityConfiguration : BaseEntityConfiguration<User>
     public override void Configure(EntityTypeBuilder<User> builder)
     {
         base.Configure(builder);
-        
+
         builder.ToTable("user", EksiSozlukContext.DEFAULT_SCHEMA);
     }
 }

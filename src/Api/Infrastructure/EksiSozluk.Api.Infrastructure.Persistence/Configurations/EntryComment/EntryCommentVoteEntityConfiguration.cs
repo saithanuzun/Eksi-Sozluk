@@ -10,7 +10,7 @@ public class EntryCommentVoteEntityConfiguration : BaseEntityConfiguration<Entry
     public override void Configure(EntityTypeBuilder<EntryCommentVote> builder)
     {
         base.Configure(builder);
-        
+
         builder.ToTable("entrycommentvote", EksiSozlukContext.DEFAULT_SCHEMA);
 
         builder.HasOne(i => i.EntryComment)

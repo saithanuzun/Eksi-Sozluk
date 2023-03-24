@@ -8,9 +8,7 @@ public class EntryComment : BaseEntity
 
     public virtual Entry Entry { get; set; }
     public virtual User User { get; set; }
-    
+
     public virtual ICollection<EntryCommentVote> EntryCommentVotes { get; set; }
     public virtual ICollection<EntryCommentFavorite> EntryCommentFavorites { get; set; }
-    
-    
 }

@@ -1,6 +1,6 @@
 using Bogus;
 using EksiSozluk.Api.Domain.Entities;
-using EksiSozluk.Api.Infrastructure.Persistence.Encryptor;
+using EksiSozluk.Api.Application.Encryptor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -11,17 +11,17 @@ public class SeedData
     private static List<User> GetUsers()
     {
         var result = new Faker<User>("tr")
-                .RuleFor(i => i.Id, i => Guid.NewGuid())
-                .RuleFor(i => i.CreatedDate,
-                        i => i.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now))
-                .RuleFor(i => i.FirstName, i => i.Person.FirstName)
-                .RuleFor(i => i.LastName, i => i.Person.LastName)
-                .RuleFor(i => i.Email, i => i.Internet.Email())
-                .RuleFor(i => i.Username, i => i.Internet.UserName())
-                .RuleFor(i => i.Password, i => PasswordEncryptor.Encrypt(i.Internet.Password()))
-                .RuleFor(i => i.EmailConfirmed, i => i.PickRandom(true, false))
-            .Generate(500); 
-             
+            .RuleFor(i => i.Id, i => Guid.NewGuid())
+            .RuleFor(i => i.CreatedDate,
+                i => i.Date.Between(DateTime.Now.AddDays(-100), DateTime.Now))
+            .RuleFor(i => i.FirstName, i => i.Person.FirstName)
+            .RuleFor(i => i.LastName, i => i.Person.LastName)
+            .RuleFor(i => i.Email, i => i.Internet.Email())
+            .RuleFor(i => i.Username, i => i.Internet.UserName())
+            .RuleFor(i => i.Password, i => PasswordEncryptor.Encrypt(i.Internet.Password()))
+            .RuleFor(i => i.EmailConfirmed, i => i.PickRandom(true, false))
+            .Generate(500);
+
         return result;
     }
 
@@ -44,7 +44,7 @@ public class SeedData
         await context.Users.AddRangeAsync(users);
 
         var guids = Enumerable.Range(0, 150).Select(i => Guid.NewGuid()).ToList();
-        int counter = 0;
+        var counter = 0;
 
         var entries = new Faker<Entry>("en")
             .RuleFor(i => i.Id, i => guids[counter++])
@@ -67,7 +67,7 @@ public class SeedData
             .Generate(1000);
 
         await context.EntryComments.AddRangeAsync(comments);
-        
+
         await context.SaveChangesAsync();
     }
 }

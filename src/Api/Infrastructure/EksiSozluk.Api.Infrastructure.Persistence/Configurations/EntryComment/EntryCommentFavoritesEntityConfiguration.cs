@@ -17,11 +17,9 @@ public class EntryCommentFavoritesEntityConfiguration : BaseEntityConfiguration<
             .WithMany(i => i.EntryCommentFavorites)
             .HasForeignKey(i => i.CreatedById)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         builder.HasOne(i => i.EntryComment)
             .WithMany(i => i.EntryCommentFavorites)
             .HasForeignKey(i => i.EntryCommentId);
-
-
     }
 }

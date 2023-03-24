@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EksiSozluk.Api.Infrastructure.Persistence.Encryptor;
+namespace EksiSozluk.Api.Application.Encryptor;
 
 public class PasswordEncryptor
 {
@@ -9,8 +9,8 @@ public class PasswordEncryptor
     {
         using (var md5 = MD5.Create())
         {
-            byte[] inputBytes = Encoding.ASCII.GetBytes(password);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
+            var inputBytes = Encoding.ASCII.GetBytes(password);
+            var hashBytes = md5.ComputeHash(inputBytes);
 
             return Convert.ToHexString(hashBytes);
         }

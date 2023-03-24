@@ -13,5 +13,4 @@ public class User : BaseEntity
     public ICollection<EntryComment> EntryComments { get; set; }
     public ICollection<EntryFavorite> EntryFavorites { get; set; }
     public ICollection<EntryCommentFavorite> EntryCommentFavorites { get; set; }
-
 }

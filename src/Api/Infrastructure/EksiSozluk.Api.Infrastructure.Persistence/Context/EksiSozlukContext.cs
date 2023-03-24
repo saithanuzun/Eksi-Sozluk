@@ -37,10 +37,7 @@ public class EksiSozlukContext : DbContext
         {
             var connStr =
                 "USER ID=postgres ; Password=password123;Server=localhost;Port=5432;Database=eksisozluk;Integrated Security=true;Pooling=true";
-            optionsBuilder.UseNpgsql(connStr, opt =>
-            {
-                opt.EnableRetryOnFailure();
-            }); 
+            optionsBuilder.UseNpgsql(connStr, opt => { opt.EnableRetryOnFailure(); });
         }
     }
 
@@ -61,14 +58,14 @@ public class EksiSozlukContext : DbContext
         return base.SaveChanges();
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         OnBeforeSave();
         return base.SaveChangesAsync(cancellationToken);
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
-        CancellationToken cancellationToken = new CancellationToken())
+        CancellationToken cancellationToken = new())
     {
         OnBeforeSave();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -85,9 +82,7 @@ public class EksiSozlukContext : DbContext
     private void PrepareAddedEntity(IEnumerable<BaseEntity> entities)
     {
         foreach (var entity in entities)
-        {
             if (entity.CreatedDate == DateTime.MinValue)
                 entity.CreatedDate = DateTime.Now;
-        }
     }
 }

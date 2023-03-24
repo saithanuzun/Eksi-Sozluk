@@ -9,9 +9,9 @@ public class EntryEntityConfiguration : BaseEntityConfiguration<Domain.Entities.
     public override void Configure(EntityTypeBuilder<Domain.Entities.Entry> builder)
     {
         base.Configure(builder);
-        
+
         builder.ToTable("entry", EksiSozlukContext.DEFAULT_SCHEMA);
-        
+
         builder.HasOne(i => i.CreatedBy)
             .WithMany(i => i.Entries)
             .HasForeignKey(i => i.CreatedById);
