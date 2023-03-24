@@ -1,4 +1,6 @@
+using EksiSozluk.Api.Application.Interfaces.Repositories;
 using EksiSozluk.Api.Infrastructure.Persistence.Context;
+using EksiSozluk.Api.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,16 +12,26 @@ public static class Registration
     public static IServiceCollection AddInfrastructureRegistration(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
-        var ConnStr = configuration.GetConnectionString("PostgreSql");
+        var connStr = configuration.GetConnectionString("PostgreSql");
+        
         serviceCollection.AddDbContext<EksiSozlukContext>(conf =>
         {
-            conf.UseNpgsql(ConnStr, opt =>
+            conf.UseNpgsql(connStr, opt =>
             {
-                
+                opt.EnableRetryOnFailure();
             });
         });
-        var seedData = new SeedData();
-        seedData.SeedAsync(configuration).GetAwaiter().GetResult();
+        serviceCollection.AddScoped<DbContext, EksiSozlukContext>();
+
+        
+        //var seedData = new SeedData();
+        //seedData.SeedAsync(configuration).GetAwaiter().GetResult();
+        
+        serviceCollection.AddScoped<IUserRepository,UserRepository>();
+        serviceCollection.AddScoped<IEmailConfirmationRepository, EmailConfirmationRepository>();
+        serviceCollection.AddScoped<IEntryRepository, EntryRepository>();
+        serviceCollection.AddScoped<IEntryCommentRepository, EntryCommentRepository>();
+        
         return serviceCollection;
     }
 }
