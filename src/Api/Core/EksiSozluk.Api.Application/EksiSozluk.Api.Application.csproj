@@ -23,9 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Features\Commands\User\ChangePassword" />
-        <Folder Include="Features\Commands\User\ConfirmEmail" />
-        <Folder Include="Features\Commands\User\Update" />
         <Folder Include="Features\Queries" />
     </ItemGroup>
 
