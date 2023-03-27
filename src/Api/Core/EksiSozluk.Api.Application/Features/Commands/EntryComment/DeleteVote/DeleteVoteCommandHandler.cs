@@ -25,11 +25,8 @@ public class DeleteVoteCommandHandler : IRequestHandler<DeleteVoteCommandRequest
             UserId = request.UserId,
         };
         var json = JsonSerializer.Serialize(obj);
-        _queueManager.SendMassageToExchange(RabbitMQConstants.VoteExchangeName,
-            RabbitMQConstants.DefaultExchangeType,
-            RabbitMQConstants.DeleteEntryCommentVoteQueueName
-            ,json);
-        
+        _queueManager.SendMassageToVoteExchange(RabbitMQConstants.DeleteEntryCommentVoteQueueName,json);
+
         return new DeleteVoteCommandResponse() { Deleted = true };
     }
 }

@@ -23,10 +23,8 @@ public class DeleteEntryFavCommandHandler : IRequestHandler<DeleteEntryFavComman
             EntryId = request.EntryId,
         };
         var json = JsonSerializer.Serialize(obj);
-        _queueManager.SendMassageToExchange(RabbitMQConstants.FavExchangeName,
-            RabbitMQConstants.DefaultExchangeType,
-            RabbitMQConstants.DeleteEntryFavQueueName,
-            obj:json);
+        _queueManager.SendMassageToFavExchange(RabbitMQConstants.DeleteEntryFavQueueName,json);
+
         
         return new DeleteEntryFavCommandResponse(){Deleted = true};
     }

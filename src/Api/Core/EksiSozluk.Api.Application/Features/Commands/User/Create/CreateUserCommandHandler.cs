@@ -33,18 +33,15 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest
         var rows = await _userRepository.AddAsync(dbUser);
         if (rows > 0)
         {
-            var @event = new UserEmailChangedEvent()
+            var obj = new UserEmailChangedEvent()
             {
                 OldEmailAddress = null,
                 NewEmailAddress = dbUser.Email,
             };
-            var obj = JsonSerializer.Serialize(@event);
+            var json = JsonSerializer.Serialize(obj);
             
-            _queueManager.SendMassageToExchange(
-                obj:obj,
-                exchangeName: RabbitMQConstants.UserExchangeName,
-                exchangeType: RabbitMQConstants.DefaultExchangeType,
-                queueName: RabbitMQConstants.UserEmailChangedQueueName);
+            _queueManager.SendMassageToUserExchange(RabbitMQConstants.UserEmailChangedQueueName,json);
+
         }
 
         return new CreateUserCommandResponse() {Id = dbUser.Id};

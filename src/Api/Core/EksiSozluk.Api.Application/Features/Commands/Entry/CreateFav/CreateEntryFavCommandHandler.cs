@@ -26,10 +26,8 @@ public class CreateEntryFavCommandHandler : IRequestHandler<CreateEntryFavComman
         };
         var json = JsonSerializer.Serialize(createEntryFav);
         
-        _queueManager.SendMassageToExchange(RabbitMQConstants.FavExchangeName,
-            RabbitMQConstants.DefaultExchangeType,
-            RabbitMQConstants.CreateEntryFavQueueName
-            ,obj:json);
+        _queueManager.SendMassageToFavExchange(RabbitMQConstants.CreateEntryFavQueueName,json);
+   
 
         return new CreateEntryFavCommandResponse() {Fav = true};
     }

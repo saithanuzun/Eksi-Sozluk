@@ -36,18 +36,15 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommandRequest
         
         if (rows > 0 && emailChanged)
         {
-            var @event = new UserEmailChangedEvent()
+            var obj = new UserEmailChangedEvent()
             {
                 OldEmailAddress = null,
                 NewEmailAddress = dbUser.Email,
             };
-            var json = JsonSerializer.Serialize(@event);
-            _queueManager.SendMassageToExchange(
-                obj:json,
-                exchangeName: RabbitMQConstants.UserExchangeName,
-                exchangeType: RabbitMQConstants.DefaultExchangeType,
-                queueName: RabbitMQConstants.UserEmailChangedQueueName);
-
+            var json = JsonSerializer.Serialize(obj);
+            
+            _queueManager.SendMassageToUserExchange(RabbitMQConstants.UserEmailChangedQueueName,json);
+            
             dbUser.EmailConfirmed = false;
             await _userRepository.UpdateAsync(dbUser);
         }

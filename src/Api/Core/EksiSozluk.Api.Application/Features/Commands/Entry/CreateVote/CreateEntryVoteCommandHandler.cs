@@ -26,10 +26,9 @@ public class CreateEntryVoteCommandHandler : IRequestHandler<CreateEntryVoteComm
             VoteType = request.VoteType,
         };
         var json = JsonSerializer.Serialize(obj);
-        _queueManager.SendMassageToExchange(RabbitMQConstants.VoteExchangeName,
-            RabbitMQConstants.DefaultExchangeType,
-            RabbitMQConstants.CreateEntryVoteQueueName
-            ,obj:json);
+        
+        _queueManager.SendMassageToVoteExchange(RabbitMQConstants.CreateEntryVoteQueueName,json);
+
 
         return new CreateEntryVoteCommandResponse(){Vote = true};
     }

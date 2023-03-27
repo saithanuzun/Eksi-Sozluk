@@ -24,10 +24,9 @@ public class CreateFavCommandHandler : IRequestHandler<CreateFavCommandRequest,C
             EntryCommentId = request.EntryCommentId,
         };
         var json = JsonSerializer.Serialize(obj);
-        _queueManager.SendMassageToExchange(RabbitMQConstants.FavExchangeName,
-            RabbitMQConstants.DefaultExchangeType,
-            RabbitMQConstants.CreateEntryCommentFavQueueName
-            ,json);
+        
+        _queueManager.SendMassageToFavExchange(RabbitMQConstants.CreateEntryCommentFavQueueName,json);
+
         return new CreateFavCommandResponse() { };
     }
 }

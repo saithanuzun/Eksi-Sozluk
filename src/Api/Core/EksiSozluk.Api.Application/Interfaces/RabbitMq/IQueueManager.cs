@@ -2,7 +2,7 @@ namespace EksiSozluk.Api.Application.Interfaces.RabbitMq;
 
 public interface IQueueManager
 { 
-    void SendMassageToExchange(string exchangeName, string exchangeType, string queueName, string obj);
-    
-
+    void SendMassageToUserExchange(string queueName, string obj);
+    void SendMassageToFavExchange(string queueName, string obj);
+    void SendMassageToVoteExchange(string queueName, string obj);
 }

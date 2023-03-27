@@ -9,7 +9,22 @@ using RabbitMQ.Client.Events;
 namespace EksiSozluk.Api.Infrastructure.Persistence.RabbitMQ;
 public  class QueueManager : IQueueManager
 {
-    public  void SendMassageToExchange(string exchangeName, string exchangeType, string queueName ,string  obj)
+    public void SendMassageToUserExchange(string queueName, string obj)
+    {
+        SendMassageToExchange(Constants.UserExchangeName,Constants.DefaultExchangeType,queueName,obj);
+    }
+
+    public void SendMassageToFavExchange(string queueName, string obj)
+    {
+        SendMassageToExchange(Constants.FavExchangeName,Constants.DefaultExchangeType,queueName,obj);
+    }
+
+    public void SendMassageToVoteExchange(string queueName, string obj)
+    {
+        SendMassageToExchange(Constants.VoteExchangeName,Constants.DefaultExchangeType,queueName,obj);
+    }
+    
+    private void SendMassageToExchange(string exchangeName, string exchangeType, string queueName ,string  obj)
     {
         var channel = CreateBasicConsumer()
             .EnsureExchange(exchangeName:exchangeName,exchangeType: exchangeType)
@@ -17,9 +32,7 @@ public  class QueueManager : IQueueManager
             .Model;
         
         var body = Encoding.UTF8.GetBytes(obj);
-        
         channel.BasicPublish(exchangeName,queueName,null,body);
-        
     }
 
     private  EventingBasicConsumer CreateBasicConsumer()
