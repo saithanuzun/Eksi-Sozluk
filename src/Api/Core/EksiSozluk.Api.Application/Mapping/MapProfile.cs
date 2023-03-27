@@ -1,4 +1,5 @@
 using AutoMapper;
+using EksiSozluk.Api.Application.Features.Commands.Entry.Create;
 using EksiSozluk.Api.Application.Features.Commands.User.Create;
 using EksiSozluk.Api.Application.Features.Commands.User.Login;
 using EksiSozluk.Api.Application.Features.Commands.User.Update;
@@ -13,7 +14,10 @@ public class MapProfile : Profile
         CreateMap<User, LoginUserCommandResponse>()
             .ReverseMap();
         CreateMap<CreateUserCommandRequest, User>();
+        
         CreateMap<UpdateUserCommandRequest, User>();
+        CreateMap<CreateEntryCommandRequest, Entry>();
+
  
     }
 }

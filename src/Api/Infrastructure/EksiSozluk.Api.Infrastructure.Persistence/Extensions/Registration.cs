@@ -1,5 +1,7 @@
+using EksiSozluk.Api.Application.Interfaces.RabbitMq;
 using EksiSozluk.Api.Application.Interfaces.Repositories;
 using EksiSozluk.Api.Infrastructure.Persistence.Context;
+using EksiSozluk.Api.Infrastructure.Persistence.RabbitMQ;
 using EksiSozluk.Api.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,7 @@ public static class Registration
         serviceCollection.AddScoped<IEmailConfirmationRepository, EmailConfirmationRepository>();
         serviceCollection.AddScoped<IEntryRepository, EntryRepository>();
         serviceCollection.AddScoped<IEntryCommentRepository, EntryCommentRepository>();
+        serviceCollection.AddScoped<IQueueManager, QueueManager>();
 
         return serviceCollection;
     }

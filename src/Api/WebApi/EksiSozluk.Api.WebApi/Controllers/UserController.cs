@@ -1,3 +1,4 @@
+using EksiSozluk.Api.Application.Features.Commands.User.Create;
 using EksiSozluk.Api.Application.Features.Commands.User.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,5 +23,13 @@ public class UserController : ControllerBase
         var result = await _mediator.Send(commandRequest);
 
         return Ok(result);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateUserCommandRequest command)
+    {
+        var response = await _mediator.Send(command);
+
+        return Ok(response);
     }
 }

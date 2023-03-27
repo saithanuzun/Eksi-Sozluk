@@ -1,4 +1,5 @@
 using System.Reflection;
+using EksiSozluk.Api.Application.Interfaces.RabbitMq;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,7 @@ public static class Registration
 
         serviceCollection.AddAutoMapper(asm);
         serviceCollection.AddValidatorsFromAssembly(asm);
+        
 
         return serviceCollection;
     }

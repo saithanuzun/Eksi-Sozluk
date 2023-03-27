@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Features\Commands\EntryComment" />
         <Folder Include="Features\Queries" />
     </ItemGroup>
 
