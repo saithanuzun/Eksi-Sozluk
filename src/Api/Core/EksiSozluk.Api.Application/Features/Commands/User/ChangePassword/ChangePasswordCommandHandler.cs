@@ -10,17 +10,14 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
      
     public async Task<ChangePasswordCommandResponse> Handle(ChangePasswordCommandRequest request, CancellationToken cancellationToken)
     {
-        if (request.UserId.HasValue)
-            throw new ArgumentNullException("user id null");
-
-        var dbUser = await _userRepository.GetByIdAsync(request.UserId.Value);
+        var dbUser = await _userRepository.GetByIdAsync(request.UserId);
 
         if (dbUser is null)
             throw new Exception("user not found");
 
         var encPassword = PasswordEncryptor.Encrypt(request.OldPassword);
 
-        if (encPassword != dbUser.Password)
+        if (encPassword != dbUser.Password) 
             throw new Exception("password is wrong");
         
         dbUser.Password = PasswordEncryptor.Encrypt(request.NewPassword);
