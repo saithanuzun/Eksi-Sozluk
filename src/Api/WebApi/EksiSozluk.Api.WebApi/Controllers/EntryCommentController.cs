@@ -1,4 +1,5 @@
 using EksiSozluk.Api.Application.Features.Commands.Entry.Create;
+using EksiSozluk.Api.Application.Features.Queries.EntryComment.GetEntryComments;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,16 @@ public class EntryCommentController : BaseController
     public EntryCommentController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+    
+    [HttpGet]
+    [Route("/{id}")]
+    public async Task<IActionResult> GetEntryComments(Guid id, int page, int pageSize)
+    {
+        var result = await _mediator
+            .Send(new GetEntryCommentsQueryRequest(page, pageSize,id,userId: UserId.Value));
+
+        return Ok(result);
     }
 
     [HttpPost]

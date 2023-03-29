@@ -1,5 +1,9 @@
 using EksiSozluk.Api.Application.Features.Commands.Entry.Create;
 using EksiSozluk.Api.Application.Features.Queries.Entry.GetEntries;
+using EksiSozluk.Api.Application.Features.Queries.Entry.GetEntryDetails;
+using EksiSozluk.Api.Application.Features.Queries.Entry.GetMainPageEntries;
+using EksiSozluk.Api.Application.Features.Queries.Search;
+using EksiSozluk.Api.Application.Features.Queries.User.GetUserEntries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +16,13 @@ public class EntryController : BaseController
     public EntryController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet("id")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var response = _mediator.Send(new GetEntryDetailsQueryRequest() { EntryId = id, UserId = UserId });
+        return Ok(response);
     }
 
     [HttpPost]
@@ -28,5 +39,33 @@ public class EntryController : BaseController
     {
         var response = await _mediator.Send(request);
         return Ok(response);
+    }
+    
+    [Route("MainPageEntries")]
+    [HttpGet]
+    public async Task<IActionResult> GetMainPageEntries(int page, int pageSize)
+    {
+        var response = await _mediator.Send(new GetMainPageEntriesQueryRequest(UserId,page,pageSize));
+        return Ok(response);
+    }
+    [HttpGet]
+    [Route("UserEntries")]
+    public async Task<IActionResult> GetUserEntries(string userName, Guid userId, int page, int pageSize)
+    {
+        if (userId == Guid.Empty && string.IsNullOrEmpty(userName))
+            userId = UserId.Value;
+
+        var result = await _mediator.Send(new GetUserEntriesQueryRequest(userId, userName, page, pageSize));
+
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("Search")]
+    public async Task<IActionResult> Search([FromQuery] SearchRequest query)
+    {
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
     }
 }
