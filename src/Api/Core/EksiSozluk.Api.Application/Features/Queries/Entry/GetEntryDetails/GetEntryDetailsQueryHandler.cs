@@ -19,8 +19,8 @@ public class GetEntryDetailsQueryHandler : IRequestHandler<GetEntryDetailsQueryR
         var query = _entryRepository.AsQueryable();
         query = query.Include(i => i.EntryFavurites)
             .Include(i => i.CreatedBy)
-            .Include(i => i.EntryVotes)
-            .Where(i => i.Id == request.UserId);
+            .Include(i => i.EntryVotes);
+            //.Where(i => i.Id == request.UserId);
 
         var list = query.Select(i => new GetEntryDetailsQueryResponse()
         {

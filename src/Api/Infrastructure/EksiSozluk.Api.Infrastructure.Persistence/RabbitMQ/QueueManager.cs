@@ -7,7 +7,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace EksiSozluk.Api.Infrastructure.Persistence.RabbitMQ;
-public  class QueueManager : IQueueManager
+public  class QueueManager : IQueueManager 
 {
     public void SendMassageToUserExchange(string queueName, string obj)
     {
@@ -23,7 +23,7 @@ public  class QueueManager : IQueueManager
     {
         SendMassageToExchange(Constants.VoteExchangeName,Constants.DefaultExchangeType,queueName,obj);
     }
-    
+
     private void SendMassageToExchange(string exchangeName, string exchangeType, string queueName ,string  obj)
     {
         var channel = CreateBasicConsumer()

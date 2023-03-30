@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using EksiSozluk.Projections.UserService.RabbitMQ;
+
 namespace EksiSozluk.Projections.UserService;
 
 public class Worker : BackgroundService
@@ -11,10 +14,16 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        
+        var service = new Service.UserService();
+
+        RabbitMqService _rabbit = new RabbitMqService();
+        
+        _rabbit.Receiver<UserEmailChangedEvent>(Constants.UserEmailChangedQueueName,(email) =>
         {
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            await Task.Delay(1000, stoppingToken);
-        }
+            service.CreateEmailConfirmation(email).GetAwaiter().GetResult();
+            Debug.WriteLine("Email confirmed");
+        });
+        
     }
 }

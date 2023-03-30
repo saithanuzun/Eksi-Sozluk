@@ -28,7 +28,9 @@ public static class Registration
         serviceCollection.AddScoped<IEmailConfirmationRepository, EmailConfirmationRepository>();
         serviceCollection.AddScoped<IEntryRepository, EntryRepository>();
         serviceCollection.AddScoped<IEntryCommentRepository, EntryCommentRepository>();
+        
         serviceCollection.AddScoped<IQueueManager, QueueManager>();
+
 
         return serviceCollection;
     }

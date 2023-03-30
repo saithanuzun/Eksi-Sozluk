@@ -15,7 +15,7 @@ public class EntryCommentController : BaseController
     }
     
     [HttpGet]
-    [Route("/{id}")]
+    [Route("{id}")]
     public async Task<IActionResult> GetEntryComments(Guid id, int page, int pageSize)
     {
         var result = await _mediator

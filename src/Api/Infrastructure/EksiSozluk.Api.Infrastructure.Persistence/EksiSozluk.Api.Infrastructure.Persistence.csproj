@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Projections\EksiSozluk.Projections.VoteService\EksiSozluk.Projections.VoteService.csproj" />
         <ProjectReference Include="..\..\Core\EksiSozluk.Api.Application\EksiSozluk.Api.Application.csproj" />
         <ProjectReference Include="..\..\Core\EksiSozluk.Api.Domain\EksiSozluk.Api.Domain.csproj" />
     </ItemGroup>

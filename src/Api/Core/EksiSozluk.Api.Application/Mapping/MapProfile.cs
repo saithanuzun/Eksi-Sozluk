@@ -1,5 +1,6 @@
 using AutoMapper;
 using EksiSozluk.Api.Application.Features.Commands.Entry.Create;
+using EksiSozluk.Api.Application.Features.Commands.EntryComment.Create;
 using EksiSozluk.Api.Application.Features.Commands.User.Create;
 using EksiSozluk.Api.Application.Features.Commands.User.Login;
 using EksiSozluk.Api.Application.Features.Commands.User.Update;
@@ -18,13 +19,20 @@ public class MapProfile : Profile
         CreateMap<CreateUserCommandRequest, User>();
         
         CreateMap<UpdateUserCommandRequest, User>();
+
+        CreateMap<GetUserDetailsQueryResponse, User>();
+        
         
         CreateMap<CreateEntryCommandRequest, Entry>();
+
+        CreateMap<CreateEntryCommentCommandRequest, EntryComment>()
+            .ReverseMap();
 
         CreateMap<User, GetUserDetailsQueryResponse>();
 
         CreateMap<Entry, GetEntriesQueryResponse>()
             .ForMember(i => i.CommentCount, k => k.MapFrom(z => z.EntryComments.Count));
+        
         
 
 

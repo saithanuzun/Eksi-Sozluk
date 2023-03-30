@@ -35,7 +35,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest
         {
             var obj = new UserEmailChangedEvent()
             {
-                OldEmailAddress = null,
+                OldEmailAddress = "null",
                 NewEmailAddress = dbUser.Email,
             };
             var json = JsonSerializer.Serialize(obj);
