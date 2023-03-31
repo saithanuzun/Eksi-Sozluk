@@ -30,10 +30,11 @@ public static class ApplicationBuilder
         return app;
     }
 
-    private static async Task DefaultHandleException(HttpContext context, Exception exception, bool includeExceptionDetails)
+    private static async Task DefaultHandleException(HttpContext context, Exception exception,
+        bool includeExceptionDetails)
     {
-        HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
-        string message = "Internal server error occured!";
+        var statusCode = HttpStatusCode.InternalServerError;
+        var message = "Internal server error occured!";
 
         if (exception is UnauthorizedAccessException)
             statusCode = HttpStatusCode.Unauthorized;

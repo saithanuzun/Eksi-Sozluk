@@ -4,10 +4,10 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Queries.User.GetUserDetails;
 
-public class GetUserDetailsQueryHandler : IRequestHandler<GetUserDetailsQueryRequest,GetUserDetailsQueryResponse>
+public class GetUserDetailsQueryHandler : IRequestHandler<GetUserDetailsQueryRequest, GetUserDetailsQueryResponse>
 {
-    private IUserRepository _userRepository;
-    private IMapper _mapper;
+    private readonly IMapper _mapper;
+    private readonly IUserRepository _userRepository;
 
     public GetUserDetailsQueryHandler(IUserRepository userRepository, IMapper mapper)
     {
@@ -15,7 +15,8 @@ public class GetUserDetailsQueryHandler : IRequestHandler<GetUserDetailsQueryReq
         _mapper = mapper;
     }
 
-    public async Task<GetUserDetailsQueryResponse> Handle(GetUserDetailsQueryRequest request, CancellationToken cancellationToken)
+    public async Task<GetUserDetailsQueryResponse> Handle(GetUserDetailsQueryRequest request,
+        CancellationToken cancellationToken)
     {
         Domain.Entities.User dbUser = null;
 
@@ -27,6 +28,5 @@ public class GetUserDetailsQueryHandler : IRequestHandler<GetUserDetailsQueryReq
             throw new Exception("requestModel is null");
 
         return _mapper.Map<GetUserDetailsQueryResponse>(dbUser);
-
     }
 }

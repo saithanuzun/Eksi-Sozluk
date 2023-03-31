@@ -6,26 +6,28 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.Entry.DeleteVote;
 
-public class DeleteEntryVoteCommandHandler : IRequestHandler<DeleteEntryVoteCommandRequest,DeleteEntryVoteCommandResponse>
+public class
+    DeleteEntryVoteCommandHandler : IRequestHandler<DeleteEntryVoteCommandRequest, DeleteEntryVoteCommandResponse>
 {
-    private IQueueManager _queueManager;
+    private readonly IQueueManager _queueManager;
 
     public DeleteEntryVoteCommandHandler(IQueueManager queueManager)
     {
         _queueManager = queueManager;
     }
 
-    public async Task<DeleteEntryVoteCommandResponse> Handle(DeleteEntryVoteCommandRequest request, CancellationToken cancellationToken)
+    public async Task<DeleteEntryVoteCommandResponse> Handle(DeleteEntryVoteCommandRequest request,
+        CancellationToken cancellationToken)
     {
-        var obj = new DeleteEntryVoteEvent()
+        var obj = new DeleteEntryVoteEvent
         {
             UserId = request.UserId,
-            EntryId = request.EntryId,
+            EntryId = request.EntryId
         };
         var json = JsonSerializer.Serialize(obj);
-        
-        _queueManager.SendMassageToVoteExchange(RabbitMQConstants.DeleteEntryVoteQueueName,json);
 
-        return new DeleteEntryVoteCommandResponse() { Deleted = true};
+        _queueManager.SendMassageToVoteExchange(RabbitMQConstants.DeleteEntryVoteQueueName, json);
+
+        return new DeleteEntryVoteCommandResponse { Deleted = true };
     }
 }

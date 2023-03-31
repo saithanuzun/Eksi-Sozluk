@@ -1,6 +1,4 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using AutoMapper;
 using EksiSozluk.Api.Application.Encryptor;
 using EksiSozluk.Api.Application.Interfaces.Repositories;
@@ -12,17 +10,19 @@ namespace EksiSozluk.Api.Application.Features.Commands.User.Login;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, LoginUserCommandResponse>
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
+    private readonly IMapper _mapper;
+    private readonly IUserRepository _userRepository;
 
-    public LoginUserCommandHandler(IUserRepository userRepository, IMapper mapper, IConfiguration _configuration)
+    public LoginUserCommandHandler(IUserRepository userRepository, IMapper mapper, IConfiguration configuration)
     {
         _userRepository = userRepository;
         _mapper = mapper;
+        _configuration = configuration;
     }
 
-    public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
+    public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request,
+        CancellationToken cancellationToken)
     {
         var dbUser = await _userRepository.GetSingleAsync(i => i.Email == request.Email);
 
@@ -34,23 +34,23 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, 
         if (password != dbUser.Password)
             throw new Exception("Password is wrong");
 
-        if (!dbUser.EmailConfirmed)
-            throw new Exception("Email Has not confirmed yet");
+        //if (!dbUser.EmailConfirmed)
+        //    throw new Exception("Email Has not confirmed yet");
 
         var result = _mapper.Map<LoginUserCommandResponse>(dbUser);
-        
-        var claims = new Claim[] 
+
+        var claims = new Claim[]
         {
-            new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
+            new(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
             new Claim(ClaimTypes.Email, dbUser.Email),
             new Claim(ClaimTypes.Name, dbUser.Username),
             new Claim(ClaimTypes.GivenName, dbUser.FirstName),
             new Claim(ClaimTypes.Surname, dbUser.LastName)
         };
 
-        result.Token = TokenGenerator.GenerateToken(claims,_configuration);
-        
+        var secret = _configuration["AuthConfig:Secret"];
+        result.Token = TokenGenerator.GenerateToken(claims,secret);
+
         return result;
     }
-   
 }

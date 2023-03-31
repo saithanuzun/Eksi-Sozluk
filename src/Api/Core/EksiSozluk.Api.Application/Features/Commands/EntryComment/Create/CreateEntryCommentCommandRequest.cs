@@ -9,5 +9,4 @@ public class CreateEntryCommentCommandRequest : IRequest<CreateEntryCommentComma
     public string Content { get; set; }
 
     public Guid? UserId { get; set; }
-
 }

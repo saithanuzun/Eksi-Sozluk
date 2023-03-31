@@ -11,7 +11,7 @@ namespace EksiSozluk.Api.WebApi.Controllers;
 
 public class EntryController : BaseController
 {
-    private IMediator _mediator;
+    private readonly IMediator _mediator;
 
     public EntryController(IMediator mediator)
     {
@@ -21,7 +21,7 @@ public class EntryController : BaseController
     [HttpGet("id")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var response = _mediator.Send(new GetEntryDetailsQueryRequest() { EntryId = id, UserId = UserId });
+        var response = _mediator.Send(new GetEntryDetailsQueryRequest { EntryId = id, UserId = UserId });
         return Ok(response);
     }
 
@@ -40,14 +40,15 @@ public class EntryController : BaseController
         var response = await _mediator.Send(request);
         return Ok(response);
     }
-    
+
     [Route("MainPageEntries")]
     [HttpGet]
     public async Task<IActionResult> GetMainPageEntries(int page, int pageSize)
     {
-        var response = await _mediator.Send(new GetMainPageEntriesQueryRequest(UserId,page,pageSize));
+        var response = await _mediator.Send(new GetMainPageEntriesQueryRequest(UserId, page, pageSize));
         return Ok(response);
     }
+
     [HttpGet]
     [Route("UserEntries")]
     public async Task<IActionResult> GetUserEntries(string userName, Guid userId, int page, int pageSize)
@@ -59,7 +60,7 @@ public class EntryController : BaseController
 
         return Ok(result);
     }
-    
+
     [HttpGet]
     [Route("Search")]
     public async Task<IActionResult> Search([FromQuery] SearchRequest query)

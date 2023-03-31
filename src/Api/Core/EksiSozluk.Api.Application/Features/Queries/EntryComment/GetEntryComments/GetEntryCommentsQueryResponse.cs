@@ -12,5 +12,4 @@ public class GetEntryCommentsQueryResponse
 
     public int FavoritedCount { get; set; }
     public VoteType VoteType { get; set; }
-
 }

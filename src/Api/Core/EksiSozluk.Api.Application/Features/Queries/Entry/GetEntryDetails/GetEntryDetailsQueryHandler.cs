@@ -5,24 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EksiSozluk.Api.Application.Features.Queries.Entry.GetEntryDetails;
 
-public class GetEntryDetailsQueryHandler : IRequestHandler<GetEntryDetailsQueryRequest,GetEntryDetailsQueryResponse>
+public class GetEntryDetailsQueryHandler : IRequestHandler<GetEntryDetailsQueryRequest, GetEntryDetailsQueryResponse>
 {
-    private IEntryRepository _entryRepository;
+    private readonly IEntryRepository _entryRepository;
 
     public GetEntryDetailsQueryHandler(IEntryRepository entryRepository)
     {
         _entryRepository = entryRepository;
     }
 
-    public async Task<GetEntryDetailsQueryResponse> Handle(GetEntryDetailsQueryRequest request, CancellationToken cancellationToken)
+    public async Task<GetEntryDetailsQueryResponse> Handle(GetEntryDetailsQueryRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _entryRepository.AsQueryable();
         query = query.Include(i => i.EntryFavurites)
             .Include(i => i.CreatedBy)
             .Include(i => i.EntryVotes);
-            //.Where(i => i.Id == request.UserId);
+        //.Where(i => i.Id == request.UserId);
 
-        var list = query.Select(i => new GetEntryDetailsQueryResponse()
+        var list = query.Select(i => new GetEntryDetailsQueryResponse
         {
             Id = i.Id,
             Subject = i.Subject,

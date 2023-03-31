@@ -1,5 +1,5 @@
-using System.Data.SqlClient;
 using Dapper;
+using Npgsql;
 
 namespace EksiSozluk.Projections.VoteService.Services;
 
@@ -11,18 +11,20 @@ public class VoteService
     {
         this.connectionString = connectionString;
     }
-    
+
     public async Task CreateEntryVote(CreateEntryVoteEvent vote)
     {
         await DeleteEntryVote(vote.EntryId, vote.UserId);
 
-        using var connection = new SqlConnection(connectionString);
+        using var connection = new NpgsqlConnection(connectionString);
+        connection.Open();
 
-        await connection.ExecuteAsync("INSERT INTO ENTRYVOTE (Id, CreatedDate, EntryId, VoteType, CreatedById) VALUES (@Id, GETDATE(), @EntryId, @VoteType, @CreatedById)",
+        await connection.ExecuteAsync(
+            "INSERT INTO dbo.entryvote (Id, CreatedDate, EntryId, VoteType, CreatedById) VALUES (@Id, GETDATE(), @EntryId, @VoteType, @CreatedById)",
             new
             {
                 Id = Guid.NewGuid(),
-                EntryId = vote.EntryId,
+                vote.EntryId,
                 VoteType = (int)vote.VoteType,
                 CreatedById = vote.UserId
             });
@@ -30,9 +32,11 @@ public class VoteService
 
     public async Task DeleteEntryVote(Guid entryId, Guid userId)
     {
-        using var connection = new SqlConnection(connectionString);
+        using var connection = new NpgsqlConnection(connectionString);
+        connection.Open();
 
-        await connection.ExecuteAsync("DELETE FROM EntryVote WHERE EntryId = @EntryId AND CREATEDBYID = @UserId",
+
+        await connection.ExecuteAsync("DELETE FROM dbo.entryvote WHERE EntryId = @EntryId AND CREATEDBYID = @UserId",
             new
             {
                 EntryId = entryId,
@@ -44,13 +48,16 @@ public class VoteService
     {
         await DeleteEntryCommentVote(vote.EntryCommentId, vote.CreatedBy);
 
-        using var connection = new SqlConnection(connectionString);
+        using var connection = new NpgsqlConnection(connectionString);
+        connection.Open();
 
-        await connection.ExecuteAsync("INSERT INTO entrycommentvote (Id, CreatedDate, EntryCommentId, VoteType, CREATEDBYID) VALUES (@Id, GETDATE(), @EntryCommentId, @VoteType, @CreatedById)",
+
+        await connection.ExecuteAsync(
+            "INSERT INTO dbo.entrycommentvote (\"Id\", \"CreatedDate\", \"EntryCommentId\", \"VoteType\", \"CREATEDBYID\") VALUES (@Id, current_date, @EntryCommentId, @VoteType, @CreatedById)",
             new
             {
                 Id = Guid.NewGuid(),
-                EntryCommentId = vote.EntryCommentId,
+                vote.EntryCommentId,
                 VoteType = Convert.ToInt16(vote.VoteType),
                 CreatedById = vote.CreatedBy
             });
@@ -58,9 +65,11 @@ public class VoteService
 
     public async Task DeleteEntryCommentVote(Guid entryCommentId, Guid userId)
     {
-        using var connection = new SqlConnection(connectionString);
+        using var connection = new NpgsqlConnection(connectionString);
+        connection.Open();
 
-        await connection.ExecuteAsync("DELETE FROM entrycommentvote WHERE EntryCommentId = @EntryCommentId AND CREATEDBYID = @UserId",
+        await connection.ExecuteAsync(
+            "DELETE FROM dbo.entrycommentvote WHERE EntryCommentId = @EntryCommentId AND CREATEDBYID = @UserId",
             new
             {
                 EntryCommentId = entryCommentId,

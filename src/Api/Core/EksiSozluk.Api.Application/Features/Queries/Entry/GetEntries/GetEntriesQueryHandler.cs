@@ -1,16 +1,15 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using EksiSozluk.Api.Application.Features.Queries.User.GetUserEntries;
 using EksiSozluk.Api.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace EksiSozluk.Api.Application.Features.Queries.Entry.GetEntries;
 
-public class GetEntriesQueryHandler : IRequestHandler<GetEntriesQueryRequest,List<GetEntriesQueryResponse>>
+public class GetEntriesQueryHandler : IRequestHandler<GetEntriesQueryRequest, List<GetEntriesQueryResponse>>
 {
-    private IEntryRepository _entryRepository;
-    private IMapper _mapper;
+    private readonly IEntryRepository _entryRepository;
+    private readonly IMapper _mapper;
 
     public GetEntriesQueryHandler(IEntryRepository entryRepository, IMapper mapper)
     {
@@ -18,15 +17,14 @@ public class GetEntriesQueryHandler : IRequestHandler<GetEntriesQueryRequest,Lis
         _mapper = mapper;
     }
 
-    public async Task<List<GetEntriesQueryResponse>> Handle(GetEntriesQueryRequest request, CancellationToken cancellationToken)
+    public async Task<List<GetEntriesQueryResponse>> Handle(GetEntriesQueryRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _entryRepository.AsQueryable();
         if (request.TodaysEntries)
-        {
             query = query
                 .Where(i => i.CreatedDate >= DateTime.Now.Date)
                 .Where(i => i.CreatedDate <= DateTime.Now.AddDays(1).Date);
-        }
 
         var queryable = query.Include(i => i.EntryComments)
             .OrderByDescending(i => i.EntryComments.Count)

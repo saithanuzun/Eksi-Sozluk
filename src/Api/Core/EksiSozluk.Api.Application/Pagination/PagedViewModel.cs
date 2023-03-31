@@ -2,9 +2,8 @@ namespace EksiSozluk.Api.Application.Pagination;
 
 public class PagedViewModel<T> where T : class
 {
-    public PagedViewModel(): this(new List<T>(), new Page())
+    public PagedViewModel() : this(new List<T>(), new Page())
     {
-
     }
 
     public PagedViewModel(IList<T> results, Page pageInfo)

@@ -3,9 +3,10 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Queries.User.GetUserEntries;
 
-public class GetUserEntriesQueryRequest :BasePagedQuery, IRequest<PagedViewModel<GetUserEntriesQueryResponse>>
+public class GetUserEntriesQueryRequest : BasePagedQuery, IRequest<PagedViewModel<GetUserEntriesQueryResponse>>
 {
-    public GetUserEntriesQueryRequest(Guid? userId, string? username,int page =1 ,int pageSize=10) : base(page,pageSize)
+    public GetUserEntriesQueryRequest(Guid? userId, string? username, int page = 1, int pageSize = 10) : base(page,
+        pageSize)
     {
         UserId = userId;
         Username = username;

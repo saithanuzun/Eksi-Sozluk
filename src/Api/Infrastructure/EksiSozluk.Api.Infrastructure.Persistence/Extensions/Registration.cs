@@ -20,7 +20,7 @@ public static class Registration
         {
             conf.UseNpgsql(connStr, opt => { opt.EnableRetryOnFailure(); });
         });
-        
+
         //var seedData = new SeedData();
         //seedData.SeedAsync(configuration).GetAwaiter().GetResult();
 
@@ -28,7 +28,7 @@ public static class Registration
         serviceCollection.AddScoped<IEmailConfirmationRepository, EmailConfirmationRepository>();
         serviceCollection.AddScoped<IEntryRepository, EntryRepository>();
         serviceCollection.AddScoped<IEntryCommentRepository, EntryCommentRepository>();
-        
+
         serviceCollection.AddScoped<IQueueManager, QueueManager>();
 
 

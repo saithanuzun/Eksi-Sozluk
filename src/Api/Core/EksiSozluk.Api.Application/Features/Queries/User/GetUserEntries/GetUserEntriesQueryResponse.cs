@@ -13,10 +13,10 @@ public class GetUserEntriesQueryResponse
     public DateTime CreatedDate { get; set; }
 
     public string CreatedByUserName { get; set; }
-    
+
     public bool IsFavorited { get; set; }
 
     public int FavoritedCount { get; set; }
-    
+
     public VoteType VoteType { get; set; }
 }

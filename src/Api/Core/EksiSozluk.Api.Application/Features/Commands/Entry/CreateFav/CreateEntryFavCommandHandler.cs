@@ -6,9 +6,9 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.Entry.CreateFav;
 
-public class CreateEntryFavCommandHandler : IRequestHandler<CreateEntryFavCommandRequest,CreateEntryFavCommandResponse>
+public class CreateEntryFavCommandHandler : IRequestHandler<CreateEntryFavCommandRequest, CreateEntryFavCommandResponse>
 {
-    private IQueueManager _queueManager;
+    private readonly IQueueManager _queueManager;
 
     public CreateEntryFavCommandHandler(IQueueManager queueManager)
     {
@@ -16,19 +16,19 @@ public class CreateEntryFavCommandHandler : IRequestHandler<CreateEntryFavComman
     }
 
 
-    public async Task<CreateEntryFavCommandResponse> Handle(CreateEntryFavCommandRequest request, CancellationToken cancellationToken)
+    public async Task<CreateEntryFavCommandResponse> Handle(CreateEntryFavCommandRequest request,
+        CancellationToken cancellationToken)
     {
-        var createEntryFav = new CreateEntryFavEvent()
+        var createEntryFav = new CreateEntryFavEvent
         {
             EntryId = request.EntryId.Value,
-            CreatedBy = request.UserId.Value,
-
+            CreatedBy = request.UserId.Value
         };
         var json = JsonSerializer.Serialize(createEntryFav);
-        
-        _queueManager.SendMassageToFavExchange(RabbitMQConstants.CreateEntryFavQueueName,json);
-   
 
-        return new CreateEntryFavCommandResponse() {Fav = true};
+        _queueManager.SendMassageToFavExchange(RabbitMQConstants.CreateEntryFavQueueName, json);
+
+
+        return new CreateEntryFavCommandResponse { Fav = true };
     }
 }

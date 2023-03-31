@@ -4,7 +4,7 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.Entry.Create;
 
-public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommandRequest,CreateEntryCommandResponse>
+public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommandRequest, CreateEntryCommandResponse>
 {
     private readonly IEntryRepository _entryRepository;
     private readonly IMapper _mapper;
@@ -14,12 +14,13 @@ public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommandReque
         _entryRepository = entryRepository;
         _mapper = mapper;
     }
-    public async Task<CreateEntryCommandResponse> Handle(CreateEntryCommandRequest request, CancellationToken cancellationToken)
+
+    public async Task<CreateEntryCommandResponse> Handle(CreateEntryCommandRequest request,
+        CancellationToken cancellationToken)
     {
         var dbEntry = _mapper.Map<Domain.Entities.Entry>(request);
         await _entryRepository.AddAsync(dbEntry);
 
-        return new CreateEntryCommandResponse() { Id = dbEntry.Id };
-
+        return new CreateEntryCommandResponse { Id = dbEntry.Id };
     }
 }

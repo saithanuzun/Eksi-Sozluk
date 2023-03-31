@@ -1,6 +1,3 @@
-using System.Text.Json;
-using EksiSozluk.Api.Application.RabbitMQ;
-using EksiSozluk.Api.Application.RabbitMQ.Events.Entry;
 using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.Entry.DeleteFav;

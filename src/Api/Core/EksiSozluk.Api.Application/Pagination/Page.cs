@@ -4,19 +4,16 @@ public class Page
 {
     public Page() : this(0)
     {
-
     }
 
     public Page(int totalRowCount) :
         this(1, 10, totalRowCount)
     {
-
     }
 
     public Page(int pageSize, int totalRowCount) :
         this(1, pageSize, totalRowCount)
     {
-
     }
 
     public Page(int currentPage, int pageSize, int totalRowCount)

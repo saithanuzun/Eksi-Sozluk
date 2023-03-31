@@ -1,5 +1,4 @@
 using EksiSozluk.Api.Application.Extensions;
-using EksiSozluk.Api.Application.Features.Queries.Entry.GetMainPageEntries;
 using EksiSozluk.Api.Application.Interfaces.Repositories;
 using EksiSozluk.Api.Application.Pagination;
 using EksiSozluk.Api.Domain.Enums;
@@ -8,9 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EksiSozluk.Api.Application.Features.Queries.EntryComment.GetEntryComments;
 
-public class GetEntryCommentsQueryHandler : IRequestHandler<GetEntryCommentsQueryRequest,PagedViewModel<GetEntryCommentsQueryResponse>>
+public class GetEntryCommentsQueryHandler : IRequestHandler<GetEntryCommentsQueryRequest,
+    PagedViewModel<GetEntryCommentsQueryResponse>>
 {
-    private IEntryCommentRepository _entryCommentRepository;
+    private readonly IEntryCommentRepository _entryCommentRepository;
 
 
     public GetEntryCommentsQueryHandler(IEntryCommentRepository entryCommentRepository)
@@ -18,7 +18,8 @@ public class GetEntryCommentsQueryHandler : IRequestHandler<GetEntryCommentsQuer
         _entryCommentRepository = entryCommentRepository;
     }
 
-    public async Task<PagedViewModel<GetEntryCommentsQueryResponse>> Handle(GetEntryCommentsQueryRequest request, CancellationToken cancellationToken)
+    public async Task<PagedViewModel<GetEntryCommentsQueryResponse>> Handle(GetEntryCommentsQueryRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _entryCommentRepository.AsQueryable();
         query = query
@@ -27,7 +28,7 @@ public class GetEntryCommentsQueryHandler : IRequestHandler<GetEntryCommentsQuer
             .Include(i => i.EntryCommentVotes)
             .Where(i => i.EntryId == request.EntryId);
 
-        var list = query.Select(i => new GetEntryCommentsQueryResponse()
+        var list = query.Select(i => new GetEntryCommentsQueryResponse
         {
             Id = i.Id,
             Content = i.Content,
@@ -35,15 +36,14 @@ public class GetEntryCommentsQueryHandler : IRequestHandler<GetEntryCommentsQuer
             CreatedDate = i.CreatedDate,
             CreatedByUsername = i.User.Username,
             IsFavorited = request.UserId.HasValue && i.EntryCommentFavorites
-                .Any(j=>j.CreatedById==request.UserId),
-            VoteType = 
-                request.UserId.HasValue && i.EntryCommentVotes.Any(j=>j.CreatedById==request.UserId)
-                    ? i.EntryCommentVotes.FirstOrDefault(k=>k.CreatedById==request.UserId).VoteType
-                    : VoteType.None,
+                .Any(j => j.CreatedById == request.UserId),
+            VoteType =
+                request.UserId.HasValue && i.EntryCommentVotes.Any(j => j.CreatedById == request.UserId)
+                    ? i.EntryCommentVotes.FirstOrDefault(k => k.CreatedById == request.UserId).VoteType
+                    : VoteType.None
         });
         var entries = await list.GetPaged(request.Page, request.PageSize);
 
         return entries;
-
     }
 }

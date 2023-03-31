@@ -6,26 +6,27 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.Entry.DeleteFav;
 
-public class DeleteEntryFavCommandHandler : IRequestHandler<DeleteEntryFavCommandRequest,DeleteEntryFavCommandResponse>
+public class DeleteEntryFavCommandHandler : IRequestHandler<DeleteEntryFavCommandRequest, DeleteEntryFavCommandResponse>
 {
-    private IQueueManager _queueManager;
+    private readonly IQueueManager _queueManager;
 
     public DeleteEntryFavCommandHandler(IQueueManager queueManager)
     {
         _queueManager = queueManager;
     }
 
-    public async Task<DeleteEntryFavCommandResponse> Handle(DeleteEntryFavCommandRequest request, CancellationToken cancellationToken)
+    public async Task<DeleteEntryFavCommandResponse> Handle(DeleteEntryFavCommandRequest request,
+        CancellationToken cancellationToken)
     {
-        var obj = new DeleteEntryFavEvent()
+        var obj = new DeleteEntryFavEvent
         {
             UserId = request.UserId,
-            EntryId = request.EntryId,
+            EntryId = request.EntryId
         };
         var json = JsonSerializer.Serialize(obj);
-        _queueManager.SendMassageToFavExchange(RabbitMQConstants.DeleteEntryFavQueueName,json);
+        _queueManager.SendMassageToFavExchange(RabbitMQConstants.DeleteEntryFavQueueName, json);
 
-        
-        return new DeleteEntryFavCommandResponse(){Deleted = true};
+
+        return new DeleteEntryFavCommandResponse { Deleted = true };
     }
 }

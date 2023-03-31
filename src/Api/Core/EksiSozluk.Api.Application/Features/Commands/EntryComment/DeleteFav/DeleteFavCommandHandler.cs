@@ -1,5 +1,4 @@
 using System.Text.Json;
-using EksiSozluk.Api.Application.Features.Commands.Entry.DeleteVote;
 using EksiSozluk.Api.Application.Interfaces.RabbitMq;
 using EksiSozluk.Api.Application.RabbitMQ;
 using EksiSozluk.Api.Application.RabbitMQ.Events.EntryComment;
@@ -7,25 +6,26 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.EntryComment.DeleteFav;
 
-public class DeleteFavCommandHandler : IRequestHandler<DeleteFavCommandRequest,DeleteFavCommandResponse>
+public class DeleteFavCommandHandler : IRequestHandler<DeleteFavCommandRequest, DeleteFavCommandResponse>
 {
-    private IQueueManager _queueManager;
+    private readonly IQueueManager _queueManager;
 
     public DeleteFavCommandHandler(IQueueManager queueManager)
     {
         _queueManager = queueManager;
     }
 
-    public async Task<DeleteFavCommandResponse> Handle(DeleteFavCommandRequest request, CancellationToken cancellationToken)
+    public async Task<DeleteFavCommandResponse> Handle(DeleteFavCommandRequest request,
+        CancellationToken cancellationToken)
     {
-        var obj = new DeleteEntryCommentFavEvent()
+        var obj = new DeleteEntryCommentFavEvent
         {
             EntryCommentId = request.EntryCommentId,
-            CreatedBy = request.UserId,
+            CreatedBy = request.UserId
         };
         var json = JsonSerializer.Serialize(obj);
-        _queueManager.SendMassageToFavExchange(RabbitMQConstants.DeleteEntryCommentFavQueueName,json);
+        _queueManager.SendMassageToFavExchange(RabbitMQConstants.DeleteEntryCommentFavQueueName, json);
 
-        return new DeleteFavCommandResponse() {Deleted = true};
+        return new DeleteFavCommandResponse { Deleted = true };
     }
 }

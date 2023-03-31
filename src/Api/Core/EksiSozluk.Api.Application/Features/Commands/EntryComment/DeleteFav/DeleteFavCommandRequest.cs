@@ -1,4 +1,3 @@
-using EksiSozluk.Api.Application.Features.Commands.Entry.DeleteVote;
 using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.EntryComment.DeleteFav;

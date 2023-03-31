@@ -1,4 +1,3 @@
-
 using EksiSozluk.Projections.VoteService.Enums;
 
 public class CreateEntryCommentVoteEvent

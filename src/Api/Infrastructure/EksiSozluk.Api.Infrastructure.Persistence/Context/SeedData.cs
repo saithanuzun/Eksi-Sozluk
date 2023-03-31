@@ -1,6 +1,6 @@
 using Bogus;
-using EksiSozluk.Api.Domain.Entities;
 using EksiSozluk.Api.Application.Encryptor;
+using EksiSozluk.Api.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

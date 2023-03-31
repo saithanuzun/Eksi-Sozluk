@@ -8,22 +8,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EksiSozluk.Api.Application.Features.Queries.Entry.GetMainPageEntries;
 
-public class GetMainPageEntriesQueryHandler : IRequestHandler<GetMainPageEntriesQueryRequest,PagedViewModel<GetMainPageEntriesQueryResponse>>
+public class GetMainPageEntriesQueryHandler : IRequestHandler<GetMainPageEntriesQueryRequest,
+    PagedViewModel<GetMainPageEntriesQueryResponse>>
 {
-    private IEntryRepository _entryRepository;
+    private readonly IEntryRepository _entryRepository;
+
     public GetMainPageEntriesQueryHandler(IEntryRepository entryRepository, IMapper iMapper)
     {
         _entryRepository = entryRepository;
     }
 
-    public  async Task<PagedViewModel<GetMainPageEntriesQueryResponse>> Handle(GetMainPageEntriesQueryRequest request, CancellationToken cancellationToken)
+    public async Task<PagedViewModel<GetMainPageEntriesQueryResponse>> Handle(GetMainPageEntriesQueryRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _entryRepository.AsQueryable();
         query = query.Include(i => i.EntryFavurites)
             .Include(i => i.CreatedBy)
             .Include(i => i.EntryVotes);
 
-        var list = query.Select(i => new GetMainPageEntriesQueryResponse()
+        var list = query.Select(i => new GetMainPageEntriesQueryResponse
         {
             Id = i.Id,
             Subject = i.Subject,
@@ -32,11 +35,11 @@ public class GetMainPageEntriesQueryHandler : IRequestHandler<GetMainPageEntries
             CreatedDate = i.CreatedDate,
             CreatedByUserName = i.CreatedBy.Username,
             IsFavorited = request.UserId.HasValue && i.EntryFavurites
-                .Any(j=>j.CreatedById==request.UserId),
-            VoteType = 
-                request.UserId.HasValue && i.EntryVotes.Any(j=>j.CreatedById==request.UserId)
-                ? i.EntryVotes.FirstOrDefault(k=>k.CreatedById==request.UserId).VoteType
-                : VoteType.None,
+                .Any(j => j.CreatedById == request.UserId),
+            VoteType =
+                request.UserId.HasValue && i.EntryVotes.Any(j => j.CreatedById == request.UserId)
+                    ? i.EntryVotes.FirstOrDefault(k => k.CreatedById == request.UserId).VoteType
+                    : VoteType.None
         });
 
         var entries = await list.GetPaged(request.Page, request.PageSize);

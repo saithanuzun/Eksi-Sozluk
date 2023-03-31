@@ -17,12 +17,12 @@ public class MapProfile : Profile
         CreateMap<User, LoginUserCommandResponse>()
             .ReverseMap();
         CreateMap<CreateUserCommandRequest, User>();
-        
+
         CreateMap<UpdateUserCommandRequest, User>();
 
         CreateMap<GetUserDetailsQueryResponse, User>();
-        
-        
+
+
         CreateMap<CreateEntryCommandRequest, Entry>();
 
         CreateMap<CreateEntryCommentCommandRequest, EntryComment>()
@@ -32,9 +32,5 @@ public class MapProfile : Profile
 
         CreateMap<Entry, GetEntriesQueryResponse>()
             .ForMember(i => i.CommentCount, k => k.MapFrom(z => z.EntryComments.Count));
-        
-        
-
-
     }
 }

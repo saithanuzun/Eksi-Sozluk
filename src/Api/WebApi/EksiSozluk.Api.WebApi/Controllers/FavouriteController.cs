@@ -21,10 +21,10 @@ public class FavouriteController : BaseController
     [Route("entry/{entryId}")]
     public async Task<IActionResult> CreateEntryFav(Guid entryId)
     {
-        var result = await _mediator.Send(new CreateEntryFavCommandRequest()
+        var result = await _mediator.Send(new CreateEntryFavCommandRequest
         {
             EntryId = entryId,
-            UserId = UserId.Value,
+            UserId = UserId.Value
         });
 
         return Ok(result);
@@ -34,10 +34,10 @@ public class FavouriteController : BaseController
     [Route("entrycomment/{entrycommentId}")]
     public async Task<IActionResult> CreateEntryCommentFav(Guid entrycommentId)
     {
-        var response = await _mediator.Send(new CreateFavCommandRequest()
+        var response = await _mediator.Send(new CreateFavCommandRequest
         {
             EntryCommentId = entrycommentId,
-            UserId = UserId.Value,
+            UserId = UserId.Value
         });
 
         return Ok(response);
@@ -48,10 +48,10 @@ public class FavouriteController : BaseController
     [Route("deleteentryfav/{entryId}")]
     public async Task<IActionResult> DeleteEntryFav(Guid entryId)
     {
-        var response = await _mediator.Send(new DeleteEntryFavCommandRequest()
+        var response = await _mediator.Send(new DeleteEntryFavCommandRequest
         {
             EntryId = entryId,
-            UserId = UserId.Value,
+            UserId = UserId.Value
         });
 
         return Ok(response);
@@ -61,10 +61,10 @@ public class FavouriteController : BaseController
     [Route("deleteentrycommentfav/{entrycommentId}")]
     public async Task<IActionResult> DeleteEntryCommentFav(Guid entrycommentId)
     {
-        var response = await _mediator.Send(new DeleteFavCommandRequest()
+        var response = await _mediator.Send(new DeleteFavCommandRequest
         {
             EntryCommentId = entrycommentId,
-            UserId = UserId.Value,
+            UserId = UserId.Value
         });
 
         return Ok(response);

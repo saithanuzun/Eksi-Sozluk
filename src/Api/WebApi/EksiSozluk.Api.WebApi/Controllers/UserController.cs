@@ -5,7 +5,6 @@ using EksiSozluk.Api.Application.Features.Commands.User.Login;
 using EksiSozluk.Api.Application.Features.Commands.User.Update;
 using EksiSozluk.Api.Application.Features.Queries.User.GetUserDetails;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EksiSozluk.Api.WebApi.Controllers;
@@ -22,18 +21,20 @@ public class UserController : BaseController
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        var user = await _mediator.Send(new GetUserDetailsQueryRequest(){UserId = id});
+        var user = await _mediator.Send(new GetUserDetailsQueryRequest { UserId = id });
 
         return Ok(user);
     }
+
     [HttpGet]
     [Route("UserName/{userName}")]
     public async Task<IActionResult> GetByUserName(string userName)
     {
-        var user = await _mediator.Send(new GetUserDetailsQueryRequest(){Username = userName,UserId = null});
+        var user = await _mediator.Send(new GetUserDetailsQueryRequest { Username = userName, UserId = null });
 
         return Ok(user);
     }
+
     [HttpPost]
     [Route("Login")]
     public async Task<IActionResult> Login([FromBody] LoginUserCommandRequest commandRequest)
@@ -42,7 +43,7 @@ public class UserController : BaseController
 
         return Ok(result);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserCommandRequest command)
     {
@@ -59,11 +60,12 @@ public class UserController : BaseController
 
         return Ok(response);
     }
+
     [HttpPost]
     [Route("Confirm")]
     public async Task<IActionResult> ConfirmEMail(Guid id)
     {
-        var response = await _mediator.Send(new ConfirmEmailCommandRequest() { ConfirmationId = id });
+        var response = await _mediator.Send(new ConfirmEmailCommandRequest { ConfirmationId = id });
 
         return Ok(response);
     }

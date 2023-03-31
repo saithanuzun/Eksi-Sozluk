@@ -8,9 +8,9 @@ namespace EksiSozluk.Api.Application.Jwt;
 
 public class TokenGenerator
 {
-    public static string GenerateToken(Claim[] claims ,IConfiguration _configuration)
+    public static string GenerateToken(Claim[] claims, string secret)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthConfig:Secret"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var expiry = DateTime.Now.AddDays(10);
 

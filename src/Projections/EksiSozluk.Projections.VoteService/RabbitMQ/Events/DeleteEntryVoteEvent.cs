@@ -1,4 +1,3 @@
-
 public class DeleteEntryVoteEvent
 {
     public Guid EntryId { get; set; }

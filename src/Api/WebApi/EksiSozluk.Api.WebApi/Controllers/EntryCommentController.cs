@@ -7,19 +7,19 @@ namespace EksiSozluk.Api.WebApi.Controllers;
 
 public class EntryCommentController : BaseController
 {
-    private IMediator _mediator;
+    private readonly IMediator _mediator;
 
     public EntryCommentController(IMediator mediator)
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> GetEntryComments(Guid id, int page, int pageSize)
     {
         var result = await _mediator
-            .Send(new GetEntryCommentsQueryRequest(page, pageSize,id,userId: UserId.Value));
+            .Send(new GetEntryCommentsQueryRequest(page, pageSize, id, UserId.Value));
 
         return Ok(result);
     }

@@ -11,9 +11,9 @@ public class BaseController : ControllerBase
     {
         get
         {
-            var value = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            
-            return value is null ? null : new Guid(value);
+            var value = HttpContext.User.Claims;
+
+            return value is null ? null : new Guid();
         }
     }
 }

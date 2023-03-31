@@ -8,47 +8,48 @@ using MediatR;
 
 namespace EksiSozluk.Api.Application.Features.Commands.User.Update;
 
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommandRequest,UpdateUserCommandResponse>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommandRequest, UpdateUserCommandResponse>
 {
-    private IMapper _mapper;
-    private IUserRepository _userRepository;
-    private IQueueManager _queueManager;
+    private readonly IMapper _mapper;
+    private readonly IQueueManager _queueManager;
+    private readonly IUserRepository _userRepository;
 
-    public UpdateUserCommandHandler(IMapper mapper, IUserRepository userRepository , IQueueManager queueManager)
+    public UpdateUserCommandHandler(IMapper mapper, IUserRepository userRepository, IQueueManager queueManager)
     {
         _mapper = mapper;
         _userRepository = userRepository;
         _queueManager = queueManager;
     }
-     
-    public async Task<UpdateUserCommandResponse> Handle(UpdateUserCommandRequest request, CancellationToken cancellationToken)
+
+    public async Task<UpdateUserCommandResponse> Handle(UpdateUserCommandRequest request,
+        CancellationToken cancellationToken)
     {
-        var dbUser =await _userRepository.GetByIdAsync(request.Id);
+        var dbUser = await _userRepository.GetByIdAsync(request.Id);
         if (dbUser is null)
             throw new Exception("user not found");
-        
+
         var dbEmailAddress = dbUser.Email;
         var emailChanged = string.CompareOrdinal(dbEmailAddress, request.Email) != 0;
-        
-        _mapper.Map(request,dbUser);
+
+        _mapper.Map(request, dbUser);
 
         var rows = await _userRepository.UpdateAsync(dbUser);
-        
+
         if (rows > 0 && emailChanged)
         {
-            var obj = new UserEmailChangedEvent()
+            var obj = new UserEmailChangedEvent
             {
                 OldEmailAddress = null,
-                NewEmailAddress = dbUser.Email,
+                NewEmailAddress = dbUser.Email
             };
             var json = JsonSerializer.Serialize(obj);
-            
-            _queueManager.SendMassageToUserExchange(RabbitMQConstants.UserEmailChangedQueueName,json);
-            
+
+            _queueManager.SendMassageToUserExchange(RabbitMQConstants.UserEmailChangedQueueName, json);
+
             dbUser.EmailConfirmed = false;
             await _userRepository.UpdateAsync(dbUser);
         }
 
-        return new UpdateUserCommandResponse() {Id = dbUser.Id};
+        return new UpdateUserCommandResponse { Id = dbUser.Id };
     }
 }

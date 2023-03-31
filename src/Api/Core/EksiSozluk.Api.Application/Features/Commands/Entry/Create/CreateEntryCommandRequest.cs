@@ -9,5 +9,4 @@ public class CreateEntryCommandRequest : IRequest<CreateEntryCommandResponse>
     public string Content { get; set; }
 
     public Guid? CreatedById { get; set; }
-
 }
