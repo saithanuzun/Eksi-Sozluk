@@ -19,6 +19,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureAuth(builder.Configuration);
 builder.Services.AddInfrastructureRegistration(builder.Configuration);
 builder.Services.AddApplicationRegistration();
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -34,6 +40,8 @@ app.UseHttpsRedirection();
 app.ConfigureExceptionHandling(app.Environment.IsDevelopment());
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors("MyPolicy");
 
 app.MapControllers();
 
