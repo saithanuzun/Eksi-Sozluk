@@ -1,6 +1,6 @@
 @inherits LayoutComponentBase
 
-<div class="navbar fixed-top text-white">
+<div class="navbar fixed-top text-white" style="background: white">
 
     <div class="logo">
         <a href="/" class="bg-white">
@@ -46,25 +46,26 @@
     </div>
     
     <AuthorizeView>
+        
         <Authorized>
             <div class="top-nav">
-                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="Create Entry" @onclick="@NavigateCreateEntryPage" />
-                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="ME" @onclick="@NavigateMEPage" />
-                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="Logout" @onclick="@NavigateLogoutPage" />
+                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="Create Entry" @onclick="@NavigateCreateEntryPage"/>
+                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="ME" @onclick="@NavigateMEPage"/>
+                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="Logout" @onclick="@NavigateLogoutPage"/>
             </div>
 
         </Authorized>
 
         <NotAuthorized>
             <div class="top-nav">
-                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="Login" @onclick="@NavigateLoginPage" />
+                <input type="button" class="form-control btn-success btn-sozluk w-auto" value="Login" @onclick="@NavigateLoginPage"/>
             </div>
         </NotAuthorized>
 
     </AuthorizeView>
 
     <div class="sub-nav">
-        <a class="sub-nav-item active">bugün</a>
+        <a class="sub-nav-item active">Today</a>
         <a class="sub-nav-item">gündem</a>
         <a class="sub-nav-item">debe</a>
         <a class="sub-nav-item">sorunsallar</a>
@@ -91,7 +92,7 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            
         </div>
 
         <article class="content px-4">

@@ -57,7 +57,7 @@ public class IdentityService : IIdentityService
     public async Task<bool> Login(LoginUserDto command)
     {
         string responseStr;
-        var httpResponse = await httpClient.PostAsJsonAsync("/api/User/Login", command);
+        var httpResponse = await httpClient.PostAsJsonAsync("/api/user/login", command);
 
         if (httpResponse != null && !httpResponse.IsSuccessStatusCode)
         {

@@ -30,6 +30,7 @@ public class AuthStateProvider : AuthenticationStateProvider
 
         var cp = new ClaimsPrincipal(new ClaimsIdentity(securityToken.Claims, "jwtAuthType"));
 
+        
         return new AuthenticationState(cp);
     }
 
