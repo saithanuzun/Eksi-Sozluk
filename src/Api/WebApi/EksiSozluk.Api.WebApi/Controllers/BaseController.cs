@@ -11,9 +11,14 @@ public class BaseController : ControllerBase
     {
         get
         {
-            var value = HttpContext.User.Claims;
-
-            return value is null ? null : new Guid();
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity is not null)
+            {
+                var userClaims = identity.Claims;
+                var id = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value;
+                return new Guid(id);
+            }
+            return null;
         }
     }
 }

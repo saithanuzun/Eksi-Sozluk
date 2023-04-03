@@ -1,6 +1,7 @@
 using EksiSozluk.Api.Application.Features.Commands.Entry.Create;
 using EksiSozluk.Api.Application.Features.Queries.EntryComment.GetEntryComments;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EksiSozluk.Api.WebApi.Controllers;
@@ -26,6 +27,7 @@ public class EntryCommentController : BaseController
 
     [HttpPost]
     [Route("CreateEntryComment")]
+    [Authorize]
     public async Task<IActionResult> CreateEntryComment([FromBody] CreateEntryCommandRequest request)
     {
         var response = await _mediator.Send(request);

@@ -5,6 +5,7 @@ using EksiSozluk.Api.Application.Features.Commands.User.Login;
 using EksiSozluk.Api.Application.Features.Commands.User.Update;
 using EksiSozluk.Api.Application.Features.Queries.User.GetUserDetails;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EksiSozluk.Api.WebApi.Controllers;
@@ -37,6 +38,7 @@ public class UserController : BaseController
 
     [HttpPost]
     [Route("Login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginUserCommandRequest commandRequest)
     {
         var result = await _mediator.Send(commandRequest);
@@ -45,6 +47,7 @@ public class UserController : BaseController
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Create([FromBody] CreateUserCommandRequest command)
     {
         var response = await _mediator.Send(command);
@@ -54,6 +57,7 @@ public class UserController : BaseController
 
     [HttpPost]
     [Route("Update")]
+    [Authorize]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommandRequest command)
     {
         var response = await _mediator.Send(command);
@@ -72,6 +76,7 @@ public class UserController : BaseController
 
     [HttpPost]
     [Route("ChangePassword")]
+    [Authorize]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommandRequest command)
     {
         var response = await _mediator.Send(command);

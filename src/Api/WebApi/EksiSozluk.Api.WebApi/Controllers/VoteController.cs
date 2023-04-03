@@ -4,11 +4,13 @@ using EksiSozluk.Api.Application.Features.Commands.EntryComment.CreateVote;
 using EksiSozluk.Api.Application.Features.Commands.EntryComment.DeleteVote;
 using EksiSozluk.Api.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EksiSozluk.Api.WebApi.Controllers;
 
-public class VoteController : BaseController
+[Authorize]
+public class  VoteController : BaseController
 {
     private readonly IMediator _mediator;
 

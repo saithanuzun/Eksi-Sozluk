@@ -3,10 +3,12 @@ using EksiSozluk.Api.Application.Features.Commands.Entry.DeleteFav;
 using EksiSozluk.Api.Application.Features.Commands.EntryComment.CreateFav;
 using EksiSozluk.Api.Application.Features.Commands.EntryComment.DeleteFav;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EksiSozluk.Api.WebApi.Controllers;
 
+[Authorize]
 public class FavouriteController : BaseController
 {
     private readonly IMediator _mediator;
