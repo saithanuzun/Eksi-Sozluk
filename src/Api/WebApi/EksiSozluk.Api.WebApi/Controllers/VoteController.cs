@@ -6,10 +6,12 @@ using EksiSozluk.Api.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 namespace EksiSozluk.Api.WebApi.Controllers;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class  VoteController : BaseController
 {
     private readonly IMediator _mediator;

@@ -4,6 +4,7 @@ using EksiSozluk.Api.Application.Features.Queries.Entry.GetEntryDetails;
 using EksiSozluk.Api.Application.Features.Queries.Entry.GetMainPageEntries;
 using EksiSozluk.Api.Application.Features.Queries.Search;
 using EksiSozluk.Api.Application.Features.Queries.User.GetUserEntries;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ public class EntryController : BaseController
 
     [HttpPost]
     [Route("CreateEntry")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
     public async Task<IActionResult> CreateEntry([FromBody] CreateEntryCommandRequest request)
     {
         var response = await _mediator.Send(request);
@@ -53,7 +54,7 @@ public class EntryController : BaseController
 
     [HttpGet]
     [Route("UserEntries")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> GetUserEntries(string userName, Guid userId, int page, int pageSize)
     {
         if (userId == Guid.Empty && string.IsNullOrEmpty(userName))

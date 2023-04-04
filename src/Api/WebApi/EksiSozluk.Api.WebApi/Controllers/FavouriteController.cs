@@ -5,10 +5,11 @@ using EksiSozluk.Api.Application.Features.Commands.EntryComment.DeleteFav;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace EksiSozluk.Api.WebApi.Controllers;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class FavouriteController : BaseController
 {
     private readonly IMediator _mediator;

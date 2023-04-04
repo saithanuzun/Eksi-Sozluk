@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EksiSozluk.Api.WebApi.Extensions;
@@ -9,23 +10,33 @@ public static class AuthRegistration
     public static IServiceCollection ConfigureAuth(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
-        var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:SigningKey"]));
-
-        serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        serviceCollection
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                options.SaveToken = true; 
+                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false, //for dev
+                    ValidateAudience = false,//only for development
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = signingKey,
-                    ValidIssuer = "https://localhost:5000",
-                    ValidAudience = "https://localhost:5000",
-                    
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["AuthConfig:Secret"]))
                 };
+
             });
+        serviceCollection.AddAuthorization(auth =>
+        {
+            auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser().Build());
+        });
+        
         return serviceCollection;
     }
 }

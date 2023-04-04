@@ -1,24 +1,29 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EksiSozluk.Api.Application.Jwt;
 
 public class TokenGenerator
 {
-    public static string GenerateToken(Claim[] claims, string secret)
+    public static string GenerateToken(List<Claim> claims, string secret)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expiry = DateTime.Now.AddDays(10);
+        var jwtTokenHandler = new JwtSecurityTokenHandler();
 
-        var token = new JwtSecurityToken(claims: claims,
-            expires: expiry,
-            signingCredentials: creds,
-            notBefore: DateTime.Now);
+        var key = Encoding.UTF8.GetBytes(secret);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var tokenDescriptor = new SecurityTokenDescriptor()
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires =DateTime.Now.AddDays(10),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256),
+            
+        };
+        
+        var token = jwtTokenHandler.CreateToken(tokenDescriptor);
+
+        return jwtTokenHandler.WriteToken(token);
+
     }
 }

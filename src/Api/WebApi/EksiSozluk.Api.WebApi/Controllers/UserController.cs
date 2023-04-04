@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using EksiSozluk.Api.Application.Features.Commands.User.ChangePassword;
 using EksiSozluk.Api.Application.Features.Commands.User.ConfirmEmail;
 using EksiSozluk.Api.Application.Features.Commands.User.Create;
@@ -7,6 +8,8 @@ using EksiSozluk.Api.Application.Features.Queries.User.GetUserDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 namespace EksiSozluk.Api.WebApi.Controllers;
 
@@ -18,6 +21,7 @@ public class UserController : BaseController
     {
         _mediator = mediator;
     }
+    
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
@@ -47,7 +51,7 @@ public class UserController : BaseController
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Create([FromBody] CreateUserCommandRequest command)
     {
         var response = await _mediator.Send(command);
@@ -57,7 +61,7 @@ public class UserController : BaseController
 
     [HttpPost]
     [Route("Update")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommandRequest command)
     {
         var response = await _mediator.Send(command);
@@ -76,7 +80,7 @@ public class UserController : BaseController
 
     [HttpPost]
     [Route("ChangePassword")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommandRequest command)
     {
         var response = await _mediator.Send(command);

@@ -1,6 +1,7 @@
 using EksiSozluk.Api.Application.Features.Commands.Entry.Create;
 using EksiSozluk.Api.Application.Features.Queries.EntryComment.GetEntryComments;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ public class EntryCommentController : BaseController
 
     [HttpPost]
     [Route("CreateEntryComment")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> CreateEntryComment([FromBody] CreateEntryCommandRequest request)
     {
         var response = await _mediator.Send(request);

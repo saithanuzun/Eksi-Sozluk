@@ -7,11 +7,12 @@ namespace EksiSozluk.Api.WebApi.Controllers;
 [ApiController]
 public class BaseController : ControllerBase
 {
-    public Guid? UserId
+    public Guid? UserId 
     {
         get
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
+            
             if (identity is not null)
             {
                 var userClaims = identity.Claims;

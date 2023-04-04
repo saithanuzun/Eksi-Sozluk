@@ -39,17 +39,16 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, 
 
         var result = _mapper.Map<LoginUserCommandResponse>(dbUser);
 
-        var claims = new Claim[]
+        List<Claim> claims = new List<Claim>()
         {
-            new(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
-            new Claim(ClaimTypes.Email, dbUser.Email),
+            new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
             new Claim(ClaimTypes.Name, dbUser.Username),
+            new Claim(ClaimTypes.Email, dbUser.Email),
             new Claim(ClaimTypes.GivenName, dbUser.FirstName),
-            new Claim(ClaimTypes.Surname, dbUser.LastName)
+            new Claim(ClaimTypes.Surname, dbUser.LastName),
         };
-
-        var secret = _configuration["AuthConfig:Secret"];
-        result.Token = TokenGenerator.GenerateToken(claims,secret);
+        
+        result.Token = TokenGenerator.GenerateToken(claims,_configuration["AuthConfig:Secret"]);
 
         return result;
     }
