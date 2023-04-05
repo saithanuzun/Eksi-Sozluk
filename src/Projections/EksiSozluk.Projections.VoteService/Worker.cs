@@ -5,32 +5,62 @@ namespace EksiSozluk.Projections.VoteService;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
+    private readonly Services.VoteService _voteService;
 
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, Services.VoteService voteService)
     {
         _logger = logger;
+        _voteService = voteService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var connectionString =
-            "USER ID=postgres ; Password=password123;Server=localhost;Port=5432;Database=eksisozluk;Integrated Security=true;Pooling=true";
+        
+        RabbitMqServiceBuilder
+            .CreateBasicConsumer()
+            .EnsureExchange(Constants.VoteExchangeName)
+            .EnsureQueue(Constants.CreateEntryVoteQueueName, Constants.VoteExchangeName)
+            .Receive<CreateEntryVoteEvent>(vote =>
+            {
+                _voteService.CreateEntryVote(vote).GetAwaiter().GetResult();
+                _logger.LogInformation("Create Entry Received EntryId: {0}, VoteType: {1}", vote.EntryId, vote.VoteType);
+            })
+            .StartConsuming(Constants.CreateEntryVoteQueueName);
+        
+        RabbitMqServiceBuilder
+            .CreateBasicConsumer()
+            .EnsureExchange(Constants.VoteExchangeName)
+            .EnsureQueue(Constants.DeleteEntryVoteQueueName, Constants.VoteExchangeName)
+            .Receive<DeleteEntryVoteEvent>(vote =>
+            {
+                _voteService.DeleteEntryVote(vote.EntryId, vote.UserId).GetAwaiter().GetResult();
+                _logger.LogInformation("Delete Entry Received EntryId: {0}", vote.EntryId);
+            })
+            .StartConsuming(Constants.DeleteEntryVoteQueueName);
 
-        var service = new Services.VoteService(connectionString);
 
-        var _rabbit = new RabbitMqService();
+        RabbitMqServiceBuilder
+            .CreateBasicConsumer()
+            .EnsureExchange(Constants.VoteExchangeName)
+            .EnsureQueue(Constants.CreateEntryCommentVoteQueueName, Constants.VoteExchangeName)
+            .Receive<CreateEntryCommentVoteEvent>(vote =>
+            {
+                _voteService.CreateEntryCommentVote(vote).GetAwaiter().GetResult();
+                _logger.LogInformation("Create Entry Comment Received EntryCommentId: {0}, VoteType: {1}", vote.EntryCommentId, vote.VoteType);
+            })
+            .StartConsuming(Constants.CreateEntryCommentVoteQueueName);
 
-        _rabbit.Receiver<CreateEntryVoteEvent>(Constants.CreateEntryVoteQueueName,
-            async vote => { await service.CreateEntryVote(vote); });
-
-        _rabbit.Receiver<CreateEntryCommentVoteEvent>(Constants.CreateEntryCommentVoteQueueName,
-            async vote => { await service.CreateEntryCommentVote(vote); });
-
-        _rabbit.Receiver<DeleteEntryVoteEvent>(Constants.DeleteEntryVoteQueueName,
-            async vote => { await service.DeleteEntryVote(vote.EntryId, vote.UserId); });
-
-        _rabbit.Receiver<DeleteEntryCommentVoteEvent>(Constants.DeleteEntryCommentVoteQueueName,
-            async vote => { await service.DeleteEntryCommentVote(vote.EntryCommentId, vote.UserId); });
+        RabbitMqServiceBuilder
+            .CreateBasicConsumer()
+            .EnsureExchange(Constants.VoteExchangeName)
+            .EnsureQueue(Constants.DeleteEntryCommentVoteQueueName, Constants.VoteExchangeName)
+            .Receive<DeleteEntryCommentVoteEvent>(vote =>
+            {
+                _voteService.DeleteEntryCommentVote(vote.EntryCommentId, vote.UserId).GetAwaiter().GetResult();
+                _logger.LogInformation("Delete Entry Comment Received EntryCommentId: {0}", vote.EntryCommentId);
+            })
+            .StartConsuming(Constants.DeleteEntryCommentVoteQueueName);
+        
     }
 }

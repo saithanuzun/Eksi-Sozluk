@@ -21,7 +21,7 @@ public class EntryCommentController : BaseController
     public async Task<IActionResult> GetEntryComments(Guid id, int page, int pageSize)
     {
         var result = await _mediator
-            .Send(new GetEntryCommentsQueryRequest(page, pageSize, id, UserId.Value));
+            .Send(new GetEntryCommentsQueryRequest(page, pageSize, id, userId: UserId.Value));
 
         return Ok(result);
     }
