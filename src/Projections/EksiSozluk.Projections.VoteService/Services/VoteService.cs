@@ -31,9 +31,6 @@ public class VoteService
         using var connection = new NpgsqlConnection(connectionString);
         connection.Open();
 
-        var votes = await connection.ExecuteAsync("SELECT * FROM dbo.entryvote");
-        
-
         await connection.ExecuteAsync("DELETE FROM dbo.entryvote WHERE \"EntryId\" = @EntryId AND \"CreatedById\" = @UserId",
             new
             {

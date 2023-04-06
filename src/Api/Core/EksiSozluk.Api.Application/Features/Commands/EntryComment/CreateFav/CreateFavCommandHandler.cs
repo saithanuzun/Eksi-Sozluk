@@ -27,6 +27,6 @@ public class CreateFavCommandHandler : IRequestHandler<CreateFavCommandRequest, 
 
         _queueManager.SendMassageToFavExchange(RabbitMQConstants.CreateEntryCommentFavQueueName, json);
 
-        return new CreateFavCommandResponse();
+        return new CreateFavCommandResponse(){IsCreated = true};
     }
 }
