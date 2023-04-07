@@ -5,19 +5,33 @@ namespace EksiSozluk.Projections.UserService;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
+    private readonly Service.UserService _userService;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, Service.UserService userService)
     {
         _logger = logger;
+        _userService = userService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var service = new Service.UserService();
+       
+        RabbitMqServiceBuilder.CreateBasicConsumer()
+            .EnsureExchange("UserExchange")
+            .EnsureQueue(Constants.UserEmailChangedQueueName, "UserExchange")
+            .Receive<UserEmailChangedEvent>(user =>
+            {
+                // DB Insert 
 
-        var _rabbit = new RabbitMqService();
+                var confirmationId = _userService.CreateEmailConfirmation(user).GetAwaiter().GetResult();
 
-        _rabbit.Receiver<UserEmailChangedEvent>(Constants.UserEmailChangedQueueName,
-            email => { service.CreateEmailConfirmation(email).GetAwaiter().GetResult(); });
+                // Generate Link
+
+
+                // Send Email
+            })
+            .StartConsuming(Constants.UserEmailChangedQueueName);
+
+        
     }
 }
