@@ -20,8 +20,4 @@
       <AdditionalFiles Include="Pages\MainPages\EntriesComponent.razor" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Pages\Entry" />
-    </ItemGroup>
-
 </Project>
