@@ -1,0 +1,35 @@
+@if (entries != null)
+{
+    foreach (var entry in entries.Results)
+    {
+        <EntryViewerComponent Entry="@entry" />
+        <br/>
+    }
+
+    <br />
+    <br />
+    <PaginationComponent TotalPage="@entries.PageInfo.TotalPageCount"
+                         CurrentPage="@currentPage"
+                         OnPageChanged="@OnPageChanged" />
+}
+
+
+@code {
+    [Inject]
+    IEntryService EntryService { get; set; }
+
+    private int currentPage = 1;
+
+    PagedViewModel<EntryDetailsDvo> entries;
+
+    public async Task OnPageChanged(int pageNumber)
+    {
+        currentPage = pageNumber;
+        entries = await EntryService.GetMainPageEntries(currentPage, 5);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        entries = await EntryService.GetMainPageEntries(currentPage, 5);
+    }
+}
