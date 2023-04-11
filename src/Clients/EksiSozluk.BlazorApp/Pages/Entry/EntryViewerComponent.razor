@@ -1,12 +1,12 @@
 @if (Entry != null)
 {
 
-    <div class="card border-0">
+    <div class="card border-0 bg-white text-black">
 
-        <div class="card-body">
-            <h5 class="card-title"><a href="/entry/@Entry.Id"><strong class="entry-subject">@Entry.Subject</strong></a> </h5>
+        <div class="card-body bg-white text-black">
+            <h5 class="card-title text-black" style="color: #1a1e21"><a href="/entry/@Entry.Id"><strong class="entry-subject text-black " style="text-transform: uppercase;font-size: large;font-weight: bold">@Entry.Subject</strong></a> </h5>
             <br />
-            <p class="entry-content">@Entry.Content</p>
+            <p class="entry-content text-black-50">@Entry.Content</p>
 
             @if (MyEntries)
             {

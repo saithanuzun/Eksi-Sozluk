@@ -48,7 +48,8 @@ public class EntryController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetMainPageEntries(int page, int pageSize)
     {
-        var response = await _mediator.Send(new GetMainPageEntriesQueryRequest(UserId, page, pageSize));
+        
+        var response = await _mediator.Send(new GetMainPageEntriesQueryRequest(null, page, pageSize));
         return Ok(response);
     }
 

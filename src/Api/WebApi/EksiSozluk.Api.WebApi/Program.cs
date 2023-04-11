@@ -1,15 +1,9 @@
 using EksiSozluk.Api.Application.Extensions;
 using EksiSozluk.Api.Infrastructure.Persistence.Extensions;
 using EksiSozluk.Api.WebApi.Extensions;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Add services to the container.
 
 builder.Services
     .AddControllers()
@@ -17,7 +11,6 @@ builder.Services
     .ConfigureApiBehaviorOptions(o => o.SuppressModelStateInvalidFilter = true);
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 
@@ -38,8 +31,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //IdentityModelEventSource.ShowPII = true;
-
 }
 
 app.UseHttpsRedirection();
@@ -48,7 +39,7 @@ app.ConfigureExceptionHandling(app.Environment.IsDevelopment());
 
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseCors("MyPolicy");
+app.UseCors("MyPolicy");
 
 app.MapControllers();
 

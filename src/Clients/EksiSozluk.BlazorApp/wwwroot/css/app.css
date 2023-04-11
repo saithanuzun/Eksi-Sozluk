@@ -14,7 +14,7 @@ a, .btn-link {
 
 a {
     text-decoration: none;
-    color: #bdbdbd;
+    color: #ffffff;
     font-size: 14px;
 }
 
@@ -81,13 +81,13 @@ label {
 }
 
 .list-group-item {
-    background-color: #2d2d2d;
-    color: #bdbdbd;
+    background-color: white;
+    color: white;
     padding: 8px 10px 8px 2px;
 }
 
 .list-group-item a {
-    color: #bdbdbd;
+    color: #ffffff;
     font-size: 14px;
 }
 
@@ -98,23 +98,23 @@ label {
 
 
 .entry-subject {
-    color: #bdbdbd;
+    color: white;
 }
 
 .entry-content {
-    color: #bdbdbd;
+    color: white;
     font-size: 16px;
 }
 
 .entry-author {
     color: #53a245;
     font-size: 13px;
-    background-color: #2d2d2d;
+    background-color: #ffffff;
 }
 
 .entry-author a {
     color: #53a245;
-    background-color: #2d2d2d;
+    background-color: #ffffff;
 }
 
 .entry-author a:hover {
@@ -124,12 +124,12 @@ label {
 .entry-date {
     color: #bdbdbd;
     font-size: 12px;
-    background-color: #2d2d2d;
+    background-color: #ffffff;
 }
 
 .entry-date a {
-    color: #666666;
-    background-color: #2d2d2d;
+    color: #ffffff;
+    background-color: #ffffff;
 }
 
 .entry-date a:hover, a:focus {

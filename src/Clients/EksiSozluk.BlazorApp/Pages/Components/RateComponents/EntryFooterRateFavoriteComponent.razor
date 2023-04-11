@@ -1,13 +1,13 @@
 ﻿
-<div class="container">
+<div class="container bg-white">
     <span>
         <a class="p-1" title="Up vote!">
-            <span class="oi oi-arrow-top entry-vote @(Vote == VoteType.UpVote ? "text-success":"text-secondary")"
+            <span style="color: white" class="oi oi-arrow-top entry-vote @(Vote == VoteType.UpVote ? "text-success":"text-secondary")"
                   @onclick="(() => UpClicked())"> </span>
         </a>
 
         <a class="p-3" title="Down vote!">
-            <span class="oi oi-arrow-bottom entry-vote @(Vote == VoteType.DownVote ? "text-danger":"text-secondary")"
+            <span style="color: white" class="oi oi-arrow-bottom entry-vote @(Vote == VoteType.DownVote ? "text-danger":"text-secondary")"
                   @onclick="(() => DownClicked())"> </span>
         </a>
 

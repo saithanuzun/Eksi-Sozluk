@@ -22,7 +22,8 @@ public class GetMainPageEntriesQueryHandler : IRequestHandler<GetMainPageEntries
         CancellationToken cancellationToken)
     {
         var query = _entryRepository.AsQueryable();
-        query = query.Include(i => i.EntryFavurites)
+        query = query
+            .Include(i => i.EntryFavurites)
             .Include(i => i.CreatedBy)
             .Include(i => i.EntryVotes);
 
@@ -38,7 +39,7 @@ public class GetMainPageEntriesQueryHandler : IRequestHandler<GetMainPageEntries
                 .Any(j => j.CreatedById == request.UserId),
             VoteType =
                 request.UserId.HasValue && i.EntryVotes.Any(j => j.CreatedById == request.UserId)
-                    ? i.EntryVotes.FirstOrDefault(k => k.CreatedById == request.UserId).VoteType
+                    ? i.EntryVotes.FirstOrDefault(k => k.CreatedById == request.UserId)!.VoteType
                     : VoteType.None
         });
 
