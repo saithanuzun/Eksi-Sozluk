@@ -46,7 +46,7 @@ public class EntryService : IEntryService
 
     public async Task<PagedViewModel<EntryCommentsDvo>> GetEntryComments(Guid entryId, int page, int pageSize)
     {
-        var result = await _client.GetFromJsonAsync<PagedViewModel<EntryCommentsDvo>>($"/api/entry/comments/{entryId}?page={page}&pageSize={pageSize}");
+        var result = await _client.GetFromJsonAsync<PagedViewModel<EntryCommentsDvo>>($"/api/entrycomment/{entryId}?page={page}&pageSize={pageSize}");
 
         return result;
     }

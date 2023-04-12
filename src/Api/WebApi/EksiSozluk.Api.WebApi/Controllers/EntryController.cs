@@ -20,10 +20,10 @@ public class EntryController : BaseController
         _mediator = mediator;
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var response = _mediator.Send(new GetEntryDetailsQueryRequest { EntryId = id, UserId = UserId });
+        var response = await _mediator.Send(new GetEntryDetailsQueryRequest { EntryId = id, UserId = UserId });
         return Ok(response);
     }
 
@@ -49,7 +49,7 @@ public class EntryController : BaseController
     public async Task<IActionResult> GetMainPageEntries(int page, int pageSize)
     {
         
-        var response = await _mediator.Send(new GetMainPageEntriesQueryRequest(null, page, pageSize));
+        var response = await _mediator.Send(new GetMainPageEntriesQueryRequest(UserId, page, pageSize));
         return Ok(response);
     }
 

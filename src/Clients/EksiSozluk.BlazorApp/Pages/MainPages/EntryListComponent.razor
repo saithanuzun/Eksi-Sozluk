@@ -25,11 +25,11 @@
     public async Task OnPageChanged(int pageNumber)
     {
         currentPage = pageNumber;
-        entries = await EntryService.GetMainPageEntries(currentPage, 5);
+        entries = await EntryService.GetMainPageEntries(currentPage, 10);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        entries = await EntryService.GetMainPageEntries(currentPage, 5);
+        entries = await EntryService.GetMainPageEntries(currentPage, 10);
     }
 }

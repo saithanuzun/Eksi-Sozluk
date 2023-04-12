@@ -2,6 +2,7 @@
 
 @if (entry is not null)
 {
+    <br />
     <EntryViewerComponent Entry="@entry" />
     <br />
 
@@ -9,7 +10,7 @@
     {
         foreach (var comment in comments.Results)
         {
-            <BlazorSozluk.WebApp.Pages.EntryComment.Components.EntryCommmentViewerComponent 
+            <EntryCommentViewerComponent 
                 EntryComment="@comment"
             />
         }
@@ -23,7 +24,7 @@
             <br/>
             <br/>
 
-            <BlazorSozluk.WebApp.Pages.EntryComment.Components.CreateEntryCommentComponent 
+            <CreateEntryCommentComponent 
                 EntryId="@entry.Id"
                 EntrySubject="@entry.Subject"
                 OnClicked="@OnCommentCreate"

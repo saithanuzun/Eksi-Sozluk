@@ -18,10 +18,11 @@ public class GetEntryDetailsQueryHandler : IRequestHandler<GetEntryDetailsQueryR
         CancellationToken cancellationToken)
     {
         var query = _entryRepository.AsQueryable();
-        query = query.Include(i => i.EntryFavurites)
+        query = query
+            .Include(i => i.EntryFavurites)
             .Include(i => i.CreatedBy)
-            .Include(i => i.EntryVotes);
-        //.Where(i => i.Id == request.UserId);
+            .Include(i => i.EntryVotes)
+            .Where(i => i.Id == request.EntryId);
 
         var list = query.Select(i => new GetEntryDetailsQueryResponse
         {
@@ -34,10 +35,10 @@ public class GetEntryDetailsQueryHandler : IRequestHandler<GetEntryDetailsQueryR
             CreatedByUserName = i.CreatedBy.Username,
             VoteType =
                 request.UserId.HasValue && i.EntryVotes.Any(j => j.CreatedById == request.UserId)
-                    ? i.EntryVotes.FirstOrDefault(j => j.CreatedById == request.UserId).VoteType
+                    ? i.EntryVotes.FirstOrDefault(j => j.CreatedById == request.UserId)!.VoteType
                     : VoteType.None
         });
 
-        return list.FirstOrDefault();
+        return   list.FirstOrDefault();
     }
 }

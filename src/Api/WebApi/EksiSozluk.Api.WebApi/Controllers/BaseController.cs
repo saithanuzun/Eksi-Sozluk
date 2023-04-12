@@ -17,7 +17,9 @@ public class BaseController : ControllerBase
             {
                 var userClaims = identity.Claims;
                 var id = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value;
-                return new Guid(id);
+                
+                if(!string.IsNullOrEmpty(id))
+                      return new Guid(id);
             }
             return null;
         }

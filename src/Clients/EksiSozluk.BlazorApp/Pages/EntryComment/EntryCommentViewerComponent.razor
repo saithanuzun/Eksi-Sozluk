@@ -1,10 +1,10 @@
 
 @if (EntryComment != null)
 {
-    <div class="card border-0">
+    <div class="card border-0" style="background: white">
 
-        <div class="card-body col-md-12">
-            <p class="entry-content">@EntryComment.Content</p>
+        <div class="card-body col-md-12 text-black" style="background: white">
+            <p class="entry-content" style="color: #2d2d2d">@EntryComment.Content</p>
 
             <EntryFooterRateFavoriteComponent EntryId="@EntryComment.Id"
                                           OnFavClicked="@OnFavClicked"
