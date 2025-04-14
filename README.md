@@ -9,6 +9,8 @@
 
 <body>
   <h1>Eksi Sozluk</h1>
+  <p><em>This repository is coded by following <strong>TechBuddy</strong> on YouTube and this explanation is written by AI.</em></p>
+
 
   <h2>Project Structure</h2>
   <p>The project repository consists of the following folders:</p>
