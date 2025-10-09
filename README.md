@@ -9,7 +9,7 @@
 
 <body>
   <h1>Eksi Sozluk</h1>
-  <p><em>This repository is coded by following <strong>TechBuddy</strong> on YouTube and this explanation is written by AI.</em></p>
+  <p><em>This repository is coded by following <strong>TechBuddy</strong> on YouTube </em></p>
 
 
   <h2>Project Structure</h2>
